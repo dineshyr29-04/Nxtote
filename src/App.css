@@ -40,3 +40,32 @@
 .read-the-docs {
   color: #888;
 }
+.p{
+  color:white;
+}
+.founders{
+  color:rgb(149, 149, 186);
+  text-align: left;
+  font-size: 1.5rem;
+  animation:mixingcolors 2s ease-in-out infinite;                                   
+}
+@keyframes fadein{
+  from{
+    opacity:0.1;
+  } to {
+    opacity:1;
+  }
+}
+
+@keyframes mixingcolors{
+  0%{
+    color:red;
+  } 50%{
+    color:blue;
+  } 100%{
+    color:green;
+  }
+}
+.h{
+  animation:fadein 2s ease-in-out infinite;
+}
