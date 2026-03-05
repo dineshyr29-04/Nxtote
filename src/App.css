@@ -1,22 +1,10 @@
-#root {
+* {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+  text-align: left;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
 
 @keyframes logo-spin {
   from {
@@ -40,32 +28,44 @@
 .read-the-docs {
   color: #888;
 }
-.p{
-  color:white;
+.box{
+  border: 1px solid black;
+  width: 100%;
+  padding: 20px;
+  border-radius: 10px;
+  background-color:rgb(134, 94, 94);
+  color:rgb(75, 58, 75);
+  position:relative;
 }
-.founders{
-  color:rgb(149, 149, 186);
-  text-align: left;
-  font-size: 1.5rem;
-  animation:mixingcolors 2s ease-in-out infinite;                                   
+.scan{
+  position:absolute;
+  width:100%;
+  height:0.5px;
+  background-image:linear-gradient(rgb(223, 166, 166),rgb(49, 44, 44));
+  z-index:2;
+  opacity:0;
+  
+  pointer-events: none;
+  left:0;
+  right:20px;
+  top:-1px;
+  overflow: hidden;
 }
-@keyframes fadein{
-  from{
-    opacity:0.1;
-  } to {
-    opacity:1;
-  }
+.box:hover .scan{
+  animation:cardScanner 2s ease forwards;
+
 }
 
-@keyframes mixingcolors{
-  0%{
-    color:red;
-  } 50%{
-    color:blue;
-  } 100%{
-    color:green;
-  }
+@keyframes cardScanner {
+  0%{top:-1px;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}
 }
-.h{
-  animation:fadein 2s ease-in-out infinite;
+.founders{
+  list-style-type: none;
+  padding: 20px;
+  margin:20px;
+  border-radius:20px;
+  background-color: #e0e0e0;
+}
+h1{
+  color:white;
 }
