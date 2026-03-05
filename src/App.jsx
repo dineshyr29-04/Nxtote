@@ -1,10 +1,8 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
-
-function List({founders,className}){
-  return <ul className={className}>{founders.map(founder=>{
+import card from './card.jsx'
+function List(props){
+  return <ul className={props.className}>{props.founders.map(founder=>{
     return  <li key={founder.name} className="founder-item">{founder.role} - {founder.name}</li>
   })}</ul>
 }     
