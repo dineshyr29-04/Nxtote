@@ -1,25 +1,25 @@
 
-function Known(props){
-    return(
-        <ul>
-            {props.skills.map(skill=>{
-                return <li key="skill">{skill}</li>
-            })}
-        </ul>
-    )
-
+function Known({ skills = [] }){
+  return (
+    <ul>
+      {skills.map((skill, idx) => (
+        <li key={skill ?? idx}>{skill}</li>
+      ))}
+    </ul>
+  )
 }
 
-const Card = () =>{
-    const skills=["JavaScript", "React", "Node.js"]
-    return(
-        <>
-        <div>
-            <h1>Dinesh A</h1>
-            <p>Software Developer</p>
-            <Known skills={skills} />
-        </div>
-        </>
-    )
+const Card = ({ name, role, skillset = [], onClose }) => {
+  return (
+    <>
+      <div className="card-view">
+        <button onClick={onClose} className="back">Back</button>
+        <h1 className="foudercard">{name}</h1>
+        <p className="founder">{role}</p>
+        <Known skills={skillset} />
+      </div>
+    </>
+  )
 }
+
 export default Card
