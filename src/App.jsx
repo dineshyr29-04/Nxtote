@@ -44,9 +44,9 @@ function App() {
   return (
     <>
       {selectedFounder === null ? (
-        <div className="border border-black w-[400px] p-5 rounded-lg relative text-[#4b3a4b] overflow-hidden bg-white/5">
+        <div className="box border border-black w-[400px] p-5 rounded-lg relative text-[#4b3a4b] overflow-hidden bg-white/5">
           <div className="scan"></div>
-          <h1 className="text-3xl font-bold mb-4 text-white tw-debug">Founders</h1>
+          <h1 className="text-3xl font-bold mb-4 text-white">Founders</h1>
           <List
             founders={founders}
             className="list-none p-5 m-5 rounded-xl bg-gray-200 text-black"

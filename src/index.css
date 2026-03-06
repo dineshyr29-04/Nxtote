@@ -1,11 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* Keep a small set of sensible defaults; main styles move to App.css via @apply */
+/* Global styles */
 :root {
   --app-bg: #242424;
-  --muted-text: #4b3a4b;
 }
 
 html, body, #root {
@@ -13,11 +10,12 @@ html, body, #root {
 }
 
 body {
-  @apply bg-[#242424] text-white m-0 min-h-screen flex items-center justify-center;
-}
-
-/* debug helper: apply a visible Tailwind utility to test compilation */
-.tw-debug {
-  @apply text-red-500;
+  background-color: #242424;
+  color: white;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 

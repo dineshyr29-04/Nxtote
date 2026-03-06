@@ -1,82 +1,24 @@
-* {
-  max-width: 1280px;
-  margin: 0 auto;
-  
-  text-align: left;
+/* Scanner animation — only thing that needs CSS (can't do keyframes inline) */
+.scan {
+  position: absolute;
+  height: 3px;
+  left: 20px;
+  right: 20px;
+  top: -3px;
+  z-index: 20;
+  opacity: 0;
+  pointer-events: none;
+  border-radius: 2px;
+  background: linear-gradient(90deg, rgba(243,243,243,0.95), rgba(255,255,255,0.2));
 }
 
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.box:hover .scan {
+  animation: cardScanner 2s ease forwards;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  @layer components {
-    /* card container */
-    .box {
-      @apply border border-black w-[400px] p-5 rounded-lg relative text-[#4b3a4b] overflow-hidden bg-white/5;
-    }
-
-    /* thin animated scanner line */
-    .scan {
-      position: absolute;
-      height: 3px;
-      left: 20px; /* match .box padding */
-      right: 20px;
-      top: -3px;
-      z-index: 20;
-      opacity: 0;
-      pointer-events: none;
-      border-radius: 2px;
-      background: linear-gradient(90deg, rgba(243,243,243,0.95), rgba(255,255,255,0.2));
-    }
-
-    .box:hover .scan {
-      animation: cardScanner 2s ease forwards;
-    }
-
-    @keyframes cardScanner {
-      0%   { top: -3px; opacity: 0; }
-      10%  { opacity: 1; }
-      90%  { opacity: 1; }
-      100% { top: calc(100% - 3px); opacity: 0; }
-    }
-
-    .founders {
-      @apply list-none p-5 m-5 rounded-xl bg-gray-200 text-black;
-    }
-
-    .founder-item {
-      @apply p-2 cursor-pointer transition-transform duration-200;
-    }
-
-    .founder-item:hover {
-      @apply bg-yellow-100 transform scale-105 border-r-4 border-pink-300;
-    }
-
-    .card-view {
-      @apply bg-white/5 p-6 rounded-lg w-[400px] text-white;
-    }
-
-    .back {
-      @apply mb-4 px-3 py-1 bg-gray-800 text-white rounded;
-    }
-
-    .foudercard {
-      @apply text-2xl font-bold mb-2;
-    }
-
-    .founder {
-      @apply text-sm text-gray-300 mb-4;
-    }
-  }
-
-  /*transform: scale(1.09);
-  transition: transform 0.3s ease;
-  border-right: 5px solid rgb(235, 198, 235);*/
+@keyframes cardScanner {
+  0%   { top: -3px; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: calc(100% - 3px); opacity: 0; }
 }
