@@ -1,4 +1,4 @@
-// ...existing code...
+
 import { useState } from 'react'
 import './App.css'
 import Card from './card.jsx'
@@ -9,7 +9,7 @@ function List({ founders, className, onItemClick }){
       {founders.map((founder, idx) => (
         <li
           key={founder.name}
-          className="founder-item"
+          className="p-2 cursor-pointer transition-transform duration-200 hover:bg-yellow-100 hover:scale-105 hover:border-r-4 hover:border-pink-300"
           onClick={() => onItemClick(founder, idx)}
         >
           {founder.role} - {founder.name}
@@ -44,10 +44,14 @@ function App() {
   return (
     <>
       {selectedFounder === null ? (
-        <div className="box">
+        <div className="border border-black w-[400px] p-5 rounded-lg relative text-[#4b3a4b] overflow-hidden bg-white/5">
           <div className="scan"></div>
-          <h1>Founders</h1>
-          <List founders={founders} className="founders" onItemClick={cardMember} />
+          <h1 className="text-3xl font-bold mb-4 text-white tw-debug">Founders</h1>
+          <List
+            founders={founders}
+            className="list-none p-5 m-5 rounded-xl bg-gray-200 text-black"
+            onItemClick={cardMember}
+          />
         </div>
       ) : (
         <Card
@@ -62,4 +66,3 @@ function App() {
 }
 
 export default App
-// ...existing code...
