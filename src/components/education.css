@@ -1,0 +1,21 @@
+:root{
+    --color:black;
+} 
+
+.btn{
+    background-color: var(--color);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btn:hover{
+    background-color:antiquewhite;
+    scale:1.05;
+} 
+.btn::after{
+    background-color: transparent;
+    color:white;
+    content: "Click me!";
+}
