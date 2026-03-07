@@ -1,18 +1,18 @@
 /* Scanner animation — only thing that needs CSS (can't do keyframes inline) */
 .scan {
   position: absolute;
-  height: 3px;
-  left: 20px;
-  right: 20px;
+  height: 1px;
+  left: 0px;
+  right: 0px;
   top: -3px;
   z-index: 20;
   opacity: 0;
   pointer-events: none;
-  border-radius: 2px;
+  border-radius: 20px;
   background: linear-gradient(90deg, rgba(243,243,243,0.95), rgba(255,255,255,0.2));
 }
 
-.box:hover .scan {
+ .scan {
   animation: cardScanner 2s ease forwards;
 }
 
@@ -21,4 +21,7 @@
   10%  { opacity: 1; }
   90%  { opacity: 1; }
   100% { top: calc(100% - 3px); opacity: 0; }
+}
+*{
+  box-sizing: border-box;
 }
