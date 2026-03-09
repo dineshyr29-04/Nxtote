@@ -145,3 +145,23 @@ body {
     scale: 1;
   }
 }
+.togglerbtn{
+  width:full;
+  cursor:pointer;
+  padding:10px 30px;
+  font-size:20px;
+  text-align:center;
+  
+
+}
+.containerbtn{
+  padding:20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  justify-content: center;
+}
+.btn1{
+  background-image: linear-gradient(#8aafec 30%,#daa4a4 50%);
+}

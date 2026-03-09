@@ -1,11 +1,25 @@
 // src/components/DarkModeToggler.jsx
 import { useState, useEffect } from 'react';
 
+
 export default function DarkModeToggler() {
   const [isDark, setIsDark] = useState(() => {
     try { return localStorage.getItem('theme') === 'dark'; } catch { return false; }
   });
+  const [show,setShow]=useState(false);
+  const flipVariants={
+    one:{
+      rotateX:0,
+      backgroundColor:"#3b82f6",
+      color:"#ffffff",  
+    },
+    two :{
+      rotateX:180,
+      backgroundColor:"#ffffff",
+      color:"rgb(24, 20, 20)",
 
+    },
+  };
   // Runs whenever isDark changes -> apply attribute and persist
   useEffect(() => {
     const theme = isDark ? 'dark' : 'light';
@@ -14,19 +28,24 @@ export default function DarkModeToggler() {
   }, [isDark]);
 
   return (
-    <button
-      onClick={() => setIsDark(v => !v)}
-      aria-pressed={isDark}
-      style={{
-        padding: '8px 12px',
-        borderRadius: 6,
-        border: 'none',
-        cursor: 'pointer',
-        background: isDark ? '#111827' : '#e5e7eb',
-        color: isDark ? '#fff' : '#111'
-      }}
-    >
-      {isDark ? 'Switch to Light' : 'Switch to Dark'}
-    </button>
+    <div>
+      <button
+          className='buttontoggler'
+          onClick={() => setIsDark(v => !v)}
+          aria-pressed={isDark}
+          style={{
+            padding: '8px 12px',
+            borderRadius: 999,
+            border: 'none',
+            cursor: 'pointer',
+            background: isDark ? '#111827' : '#e5e7eb',
+            color: isDark ? '#fff' : '#111',
+            width:"full",
+            cursor:"pointer", 
+        }}
+      >
+        {isDark ? 'Switch to Light' : 'Switch to Dark'}
+      </button>
+    </div>
   );
 }
