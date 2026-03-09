@@ -15,7 +15,10 @@ function App(){
       <DarkModeToggler />
       <div>
         <Basic />
-        <FlipButton  text1="I'm in Dinesh A" text2="Change to Next section"/>
+        <div className='pagechanger'>
+            <FlipButton  text1="I'm in Dinesh A" text2="Change to Next section"/>
+        </div>
+        
       </div>
     </div>
       

@@ -31,8 +31,9 @@ export function FlipButton({ text1, text2 }) {
         animate={show ? "two" : "one"}
         variants={flipVariants}
         transition={{ duration: 0.6, type: "spring" }}
-        whileTap={{ scale: 0.95 }}
-        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.8}}
+        whileHover={{ scale: 1 }}
+        
       >
         <motion.div
           animate={{ rotateX: show ? 180 : 0 }}
