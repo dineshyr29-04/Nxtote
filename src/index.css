@@ -23,7 +23,7 @@ html, body, #root {
   --btn-last-g1: #0ea5e9;
   --btn-last-g2: #6366f1;
 }
-[data-theme="dark"] .theme-toggle{
+[data-theme="dark"] .theme-toggle .toggle {
   background: linear-gradient(145deg, #d071f348, #e83cd95a);
 }
 /* default last-button colors (light theme) */
@@ -219,10 +219,10 @@ body {
 .theme-toggle .toggle{
   width: 48px;
   height: 28px;
-  background: #e5e7eb;
+  background: #e5e7eb; /* off track */
   border-radius: 999px;
   position: relative;
-  transition: background 0.25s ease;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
 }
 
 .theme-toggle .led{
@@ -232,18 +232,20 @@ body {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #fff;
+  background: #ffffff; /* knob color */
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  transition: transform 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 /* button-based active state */
 .theme-toggle .switch-btn.is-dark .toggle{
-  background: #111827;
+  background: #10B981; /* on track (emerald) */
+  box-shadow: 0 4px 14px rgba(16,185,129,0.25);
 }
 
 .theme-toggle .switch-btn.is-dark .toggle .led{
   transform: translateX(20px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 .buttontoggler{
   align-self:flex-end;
@@ -261,10 +263,10 @@ body {
   position: relative;
   width: 150px;
   height: 60px;
-  background: #d6d6d6;
+  background: hsl(0, 33%, 97%);
   border-radius: 50px;
   box-shadow:
-    inset -8px -8px 16px #ffffff,
+    inset -8px -8px 16px #d08d8d,
     inset 8px 8px 16px #b0b0b0;
 }
 
@@ -346,10 +348,17 @@ body {
   opacity: 0;
   font-size: 20px;
   
-  background: linear-gradient(90deg, #ff7a18, #af002d 70%);
+ background: linear-gradient(270deg,#f8a66b5d,#f86c8f58,#a3ecfc61);
+  background-size: 600% 600%;
+  animation: gradientShift 5s ease infinite;
   -webkit-background-clip: text;
   background-clip: text;
-  -webkit-text-fill-color: transparent;
   color: transparent;
+  -webkit-text-fill-color: transparent;
 
+}
+@keyframes gradientShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
 }
