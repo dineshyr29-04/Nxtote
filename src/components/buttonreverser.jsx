@@ -8,12 +8,17 @@ export function FlipButton({ text1, text2 }) {
     one: {
       rotateX: 0,
       color: "#e97d7d",
-      className:"btn1",
+      // CSS variables allow smooth color interpolation for gradients
+      "--g1": "#f5dddd00",
+      "--g2": "#8e767000",
+      boxShadow:"#594e4e",
+      borderColor:"#eed9d9",
     },
     two: {
       rotateX: 180,
-      backgroundColor: "#8989ea",
       color: "#18181b",
+      "--g1": "#a18cd1",
+      "--g2": "#fbc2eb",
     },
   };
 
