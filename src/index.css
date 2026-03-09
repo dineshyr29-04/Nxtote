@@ -7,6 +7,11 @@
   /* button gradient (light theme defaults) */
   --btn-g1: #ff9a9e;
   --btn-g2: #fad0c4;
+  /* toggle colors */
+  --toggle-off: #04050530;
+  --toggle-on: #10B981;
+  --toggle-glow-off: rgba(255,77,77,0.12);
+  --toggle-glow-on: rgba(16,185,129,0.25);
   --heading-color: #6491f4; 
 }
 
@@ -219,10 +224,11 @@ body {
 .theme-toggle .toggle{
   width: 48px;
   height: 28px;
-  background: #e5e7eb; /* off track */
+  background: var(--toggle-off); /* off track */
   border-radius: 999px;
   position: relative;
-  transition: background 0.25s ease, box-shadow 0.25s ease;
+  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.18s ease;
+  box-shadow: 0 6px 18px var(--toggle-glow-off);
 }
 
 .theme-toggle .led{
@@ -233,19 +239,25 @@ body {
   height: 20px;
   border-radius: 50%;
   background: #ffffff; /* knob color */
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 /* button-based active state */
 .theme-toggle .switch-btn.is-dark .toggle{
-  background: #10B981; /* on track (emerald) */
-  box-shadow: 0 4px 14px rgba(16,185,129,0.25);
+  background: var(--toggle-on); /* on track (emerald) */
+  box-shadow: 0 8px 30px var(--toggle-glow-on);
 }
 
 .theme-toggle .switch-btn.is-dark .toggle .led{
   transform: translateX(20px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* hover/active glow for light mode */
+.theme-toggle .switch-btn:hover .toggle{
+  box-shadow: 0 10px 28px rgba(255,77,77,0.12);
+  transform: translateY(-1px);
 }
 .buttontoggler{
   align-self:flex-end;
