@@ -14,6 +14,8 @@ export default function DarkModeToggler() {
   }, [isDark]);
 
   return (
+    <>
+    
     <div className="theme-toggle">
       <button
         type="button"
@@ -21,10 +23,12 @@ export default function DarkModeToggler() {
         aria-pressed={isDark}
         onClick={() => setIsDark(v => !v)}
       >
+        <h1 className="suretext">Change to Dark</h1>
         <div className={`toggle ${isDark ? 'is-dark' : ''}`}>
           <div className="led" />
         </div>
       </button>
     </div>
+    </>
   );
 }
