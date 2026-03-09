@@ -23,7 +23,9 @@ html, body, #root {
   --btn-last-g1: #0ea5e9;
   --btn-last-g2: #6366f1;
 }
-
+[data-theme="dark"] .theme-toggle{
+  background: linear-gradient(145deg, #d071f348, #e83cd95a);
+}
 /* default last-button colors (light theme) */
 :root {
   --btn-last-g1: #ffd2d2;
@@ -291,13 +293,12 @@ body {
   height: 50px;
   background: linear-gradient(145deg, #d071f348, #e83cd95a);
   border-radius: 50px;
-  top: 5px;
+  top: -5px;
   left: 5px;
   
   transition: all 0.3s ease-in-out;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  
+  
   padding-left: 10px;
 }
 
@@ -336,9 +337,19 @@ body {
   scale: 1.05;
   transition: all 0.3s ease-in-out;
   translate:20px;
+  .suretext{
+    opacity:1;
+    transition: opacity 1.3s ease-in-out;
+  }
 }
 .suretext{
+  opacity: 0;
   font-size: 20px;
-  color: var(--color);
   
+  background: linear-gradient(90deg, #ff7a18, #af002d 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+
 }
