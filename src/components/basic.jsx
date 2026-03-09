@@ -1,3 +1,4 @@
+
 const details = [
   {
     name: "Dinesh A",
@@ -8,6 +9,8 @@ const details = [
 
 function Basic() {
   return (
+    
+      
     <div className="outerbox">
       <ul className="members-list">
         {details.map((detail, idx) => (
@@ -25,6 +28,7 @@ function Basic() {
         ))}
       </ul>
     </div>
+   
   );
 }
 
