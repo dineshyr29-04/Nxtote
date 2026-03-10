@@ -29,12 +29,12 @@ html, body, #root {
   --btn-last-g2: #6366f1;
 }
 [data-theme="dark"] .theme-toggle .toggle {
-  background: linear-gradient(145deg, #d071f348, #e83cd95a);
+  background: linear-gradient(145deg, #c8c5ca48, #f0e7ef5a);
 }
 /* default last-button colors (light theme) */
 :root {
-  --btn-last-g1: #ffd2d2;
-  --btn-last-g2: #ffe4d6;
+  --btn-last-g1: #95e5f07a;
+  --btn-last-g2: #ba75e26f;
 }
 
 /* target the last button inside .container-btn */
