@@ -401,7 +401,7 @@ body {
     font-weight: 300;
     margin-bottom: 20px;
     color:#b5e590; 
-    font-family: 'Kalnia Glaze', cursive;
+    
     font-optical-sizing: auto;
     font-style: italic;
     font-variation-settings:
@@ -416,9 +416,10 @@ body {
     gap: 40px;
 }
 .content{
-    font-size: 28px;
+    font-size: 35px;
     line-height: 1.6;
-    color: #b5e590;
+    color: #ffffff;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.5);
     width:50%;
     font-family: "Caveat", cursive;
 }
