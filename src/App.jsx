@@ -13,7 +13,7 @@ function App(){
     <div className="background">
       <h1 class="heading">About</h1>
       <DarkModeToggler />
-      <div>
+      <div className="container">
         <Basic />
         <div className='pagechanger'>
             <FlipButton  text1="I'm in Dinesh A" text2="Change to Next section"/>
