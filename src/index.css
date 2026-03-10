@@ -1,4 +1,4 @@
-/* Global styles (vanilla CSS) */
+@import url(https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap);
 :root {
   --app-bg: #ece3e3;
   --card-bg: #ffffff;
@@ -406,20 +406,22 @@ body {
 .headcontainer{
     display: flex;
     flex-direction: row;
-    justify-content: left;
+    justify-content: space-between;
     align-items: center;
+    gap: 40px;
 }
 .content{
-    font-size: 18px;
+    font-size: 28px;
     line-height: 1.6;
-    color: var(--color);
+    color: #b5e590;
+    width:50%;
+    font-family: "Caveat", cursive;
 }
 .cursor{
   display: inline-block;
-  width: 10px;
+  width: 2px;
   height: 20px;
-  background-color: var(--color);
-  margin-left: 5px;
+  color:#b5e590;
   animation: blink 1s step-start infinite;
 }
 @keyframes blink {

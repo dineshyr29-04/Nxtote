@@ -14,9 +14,9 @@ const textSpeller=showContext[0];
     const interval=setInterval(()=>{
       setShow(textSpeller.slice(0,i+1))
       i++;
-      if (i>=showContext.length) clearInterval(interval);
-    },40);
-    return () => clearInterval(interval),[]});
+      if (i>=textSpeller.length) clearInterval(interval);
+    },70);
+    return () => clearInterval(interval)},[]);
     
   
   return (
@@ -30,7 +30,7 @@ const textSpeller=showContext[0];
         </div>
         
         <div className="content">
-          <p>{show}<span class="cursor">|</span></p>
+          <p>{show}<span className="cursor">|</span></p>
         </div>
       </div>
       
