@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single+Ink:wght@100..900&display=swap);
 :root {
   --app-bg: #ece3e3;
   --card-bg: #ffffff;
@@ -400,8 +401,12 @@ body {
     font-weight: 300;
     margin-bottom: 20px;
     color:#b5e590; 
-    font-family: 'Arial', sans-serif;
+    font-family: 'Kalnia Glaze', cursive;
+    font-optical-sizing: auto;
     font-style: italic;
+    font-variation-settings:
+    "wdth" 100;
+    color: #b5e590;
 }
 .headcontainer{
     display: flex;
