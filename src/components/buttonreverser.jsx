@@ -7,7 +7,7 @@ export function FlipButton({ text1, text2 }) {
   const flipVariants = {
     one: {
       rotateX: 0,
-      color: "#f8eded",
+      color: "#0b0a0a",
       // CSS variables allow smooth color interpolation for gradients
       "--btn-g1": "#83e3f8",
       "--btn-g2": "#55b7e7",
@@ -16,7 +16,7 @@ export function FlipButton({ text1, text2 }) {
     },
     two: {
       rotateX: 180,
-      color: "#dddde1",
+      color: "#18181f",
       "--btn-g1": "#2b7ec6",
       "--btn-g2": "#efca6e",
     },
@@ -30,8 +30,7 @@ export function FlipButton({ text1, text2 }) {
         onClick={() => setShow(!show)}
         animate={show ? "two" : "one"}
         variants={flipVariants}
-        transition={{ duration: 0.6, type: "spring" }}
-        whileTap={{ scale: 0.95}}
+        transition={{ type: "tween", duration: 0.4, ease: "easeInOut" }}        whileTap={{ scale: 0.95}}
         whileHover={{ scale: 1 }}
         
       >

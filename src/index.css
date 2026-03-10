@@ -4,7 +4,6 @@
   --card-bg: #ffffff;
   --muted-bg: #374151;
   --color:black;
-  /* button gradient (light theme defaults) */
   --btn-g1: #e77ce4;
   --btn-g2: #66c5e5;
   /* toggle colors */
@@ -29,12 +28,12 @@ html, body, #root {
   --btn-last-g2: #6366f1;
 }
 [data-theme="dark"] .theme-toggle .toggle {
-  background: linear-gradient(145deg, #c8c5ca48, #f0e7ef5a);
+  background: linear-gradient(145deg, #ffffff, #ffffff);
 }
 /* default last-button colors (light theme) */
 :root {
-  --btn-last-g1: #95e5f07a;
-  --btn-last-g2: #ba75e26f;
+  --btn-last-g1: #eff3f4;
+  --btn-last-g2:#ffffff;
 }
 
 /* target the last button inside .container-btn */
