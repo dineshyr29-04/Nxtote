@@ -9,16 +9,16 @@ export function FlipButton({ text1, text2 }) {
       rotateX: 0,
       color: "#e97d7d",
       // CSS variables allow smooth color interpolation for gradients
-      "--btn-g1": "#ff9a9e",
-      "--btn-g2": "#fad0c4",
+      "--btn-g1": "#83e3f8",
+      "--btn-g2": "#55b7e7",
       boxShadow:"#594e4e",
-      borderColor:"#eed9d9",
+      borderColor:"#cb12f57c",
     },
     two: {
       rotateX: 180,
       color: "#18181b",
-      "--btn-g1": "#a18cd1",
-      "--btn-g2": "#fbc2eb",
+      "--btn-g1": "#2b7ec6",
+      "--btn-g2": "#efca6e",
     },
   };
 
