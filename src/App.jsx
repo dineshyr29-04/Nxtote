@@ -8,7 +8,15 @@ import { FlipButton } from './components/buttonreverser';
 const showContext=["Full-stack Developer with a passion for crafting seamless user experiences and robust backend solutions. Skilled in JavaScript, React.js, Node.js, Python, C++, and Express.js. Dedicated to delivering high-quality code and innovative solutions."]
 const textSpeller=showContext[0];
 ;function App(){
-  
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    let i=0;
+    const interval=setInterval(()=>{
+      setShow(showContext.slice(0,i+1))
+      i++;
+      if (i>=showContext.length) clearInterval(interval);
+    },40);
+    return () => clearInterval(interval),[]});
     
   
   return (
@@ -22,7 +30,7 @@ const textSpeller=showContext[0];
         </div>
         
         <div className="content">
-          <textSpeller />
+          <p>{}</p>
         </div>
       </div>
       
