@@ -55,13 +55,7 @@ body {
   margin: 0;
   box-sizing: border-box;
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-
-     
+  
 }
   ::-webkit-scrollbar {
     width:4px;
@@ -74,16 +68,16 @@ body {
     background: #333;
   }
 .background-1{
-    display:flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
     max-width:100vw;
     background-color:transparent;
     padding:3rem;
-    border-radius:20px;
-    margin-right:20px;
-    
+    min-height: 100vh;
+    background-image: url('/src/assets/background.png');
+    background-size: cover;
+    background-attachment: fixed;     /* makes it scroll slower than content */
+  background-position: center;
+ 
+  height: 100vh;
 }
 .background{
    
@@ -95,7 +89,6 @@ body {
   width: 100%;
   height: 100%;
   max-width: 100vw;
-  
   padding: 20px;
   margin: 15px;
   border-radius: 8px;
@@ -401,4 +394,23 @@ body {
   margin-bottom: 20px;
   color:var(--color);
   width: 100%;
+}
+.heading{
+    font-size: 50px;
+    font-weight: 300;
+    margin-bottom: 20px;
+    color:#b5e590; 
+    font-family: 'Arial', sans-serif;
+    font-style: italic;
+}
+.headcontainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+.content{
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--color);
 }
