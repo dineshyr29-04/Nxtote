@@ -12,7 +12,7 @@ const textSpeller=showContext[0];
   useEffect(() => {
     let i=0;
     const interval=setInterval(()=>{
-      setShow(showContext.slice(0,i+1))
+      setShow(textSpeller.slice(0,i+1))
       i++;
       if (i>=showContext.length) clearInterval(interval);
     },40);
@@ -30,7 +30,7 @@ const textSpeller=showContext[0];
         </div>
         
         <div className="content">
-          <p>{}</p>
+          <p>{show}<span class="cursor">|</span></p>
         </div>
       </div>
       
