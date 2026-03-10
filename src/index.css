@@ -51,7 +51,6 @@ html, body, #root {
 
 
 body {
-  background-color: var(--app-bg);
   color: #ffffff;
   margin: 0;
   box-sizing: border-box;
@@ -61,24 +60,33 @@ body {
   align-items: center;
   justify-content: center;
   padding: 20px;
+
+     
 }
+  ::-webkit-scrollbar {
+    width:4px;
+  }
+  ::-webkit-scrollbar-thumb{
+    background: #555;
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover{
+    background: #333;
+  }
 .background-1{
     display:flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     max-width:100vw;
-    background-color: #fef3c7;
+    background-color:transparent;
     padding:3rem;
     border-radius:20px;
-    margin:2rem;
     margin-right:20px;
+    
 }
 .background{
-    display:flex;
-    flex-direction:column ;
-    justify-content: center;
-    align-items: center;
+   
     width:100vw;
     max-width:90%;
     
@@ -137,11 +145,9 @@ body {
   padding: 2px 0;
 }
 
-.title {
-  font-weight: 700;
-}
-
 .role {
+  width:100%;
+    
   color: #374151;
 }
 
@@ -388,4 +394,11 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 20px;
+}
+.title{
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color:var(--color);
+  width: 100%;
 }

@@ -11,7 +11,7 @@ export function FlipButton({ text1, text2 }) {
       // CSS variables allow smooth color interpolation for gradients
       "--btn-g1": "#83e3f8",
       "--btn-g2": "#55b7e7",
-      boxShadow:"#594e4e",
+      boxShadow:"0 4px 12px #594e4e",
       borderColor:"#cb12f57c",
     },
     two: {
@@ -30,7 +30,7 @@ export function FlipButton({ text1, text2 }) {
         onClick={() => setShow(!show)}
         animate={show ? "two" : "one"}
         variants={flipVariants}
-        transition={{ type: "tween", duration: 0.4, ease: "easeInOut" }}        whileTap={{ scale: 0.95}}
+        transition={{ type: "spring", stiffness: 100, damping: 10, mass: 1  }} whileTap={{ scale: 0.95}}
         whileHover={{ scale: 1 }}
         
       >

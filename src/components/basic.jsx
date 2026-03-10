@@ -17,6 +17,7 @@ function Basic() {
           <li key={idx} className="member">
             <div className="meta">
               <div className="title">{detail.name}</div>
+              <br/>
               <div className="role">{detail.role}</div>
             </div>
             <ul className="skills-list">

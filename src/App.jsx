@@ -10,14 +10,22 @@ function App(){
     
   
   return (
-    <div className="background">
-      <h1 class="heading">About</h1>
+    <div className="background-1">
+      <div className='heading'>
+        <h1>DINESH</h1>
+        <br/> 
+        <h1>A</h1>
+        <div>
+
+        </div>
+      </div>
+      
       <DarkModeToggler />
       <div className="container">
-        <Basic />
-        <div className='pagechanger'>
-            <FlipButton  text1="I'm in Dinesh A" text2="Change to Next section"/>
-        </div>
+        
+        {/*<div className='pagechanger'>
+            <FlipButton  text1="Go back to next section" text2="Change to Next section"/>
+        </div>*/}
         
       </div>
     </div>
