@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 
@@ -11,21 +11,22 @@ function Navbar() {
   return (
     <>
       <div className="navbar-container">
-        <div classname="navbar-logo">
-          <link to="/">
-            <img src="../assets/react.svg" alt="logo" classname="navbar-logo" />
-          </link>
+        <div className="navbar-logo">
+          <Link to="/">
+            <img src="/image.png" alt="logo" className="navbar-logo" />
+          </Link>
         </div>
-        <div classname="navbar-menu">
-          <ul classname="navbar-links">
+        <div className="navbar-menu">
+          <ul className="navbar-links">
             {navbarlinks.map((link, index) => (
-              <li key={index} classname="navbar-link">
+              <li key={index} className="navbar-link">
                 <Link to={link.path}>{link.name}</Link>
               </li>
             ))}
           </ul>
         </div>
       </div>
+      
     </>
   );
 }
