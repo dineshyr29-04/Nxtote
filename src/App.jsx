@@ -1,50 +1,16 @@
+import {useState,uyseEffect} from 'react';
+import './App.css';
+import {BrouserRouter as Router, Routes, Route} from 'react-router-dom';
+import Home from './components/Home';
+import About from './components/About';
+import Contact from './components/Contact';
 
-import {useState,useEffect} from 'react';
 
-import "./index.css"
-import DarkModeToggler from './components/darktoggler';
-import Basic from './components/basic';
-import { FlipButton } from './components/buttonreverser';
-const showContext=["Full-stack Developer with a passion for crafting seamless user experiences and robust backend solutions. Skilled in JavaScript, React.js, Node.js, Python, C++, and Express.js. Dedicated to delivering high-quality code and innovative solutions."]
-const textSpeller=showContext[0];
-;function App(){
-  const [show, setShow] = useState(false);
-  useEffect(() => {
-    let i=0;
-    const interval=setInterval(()=>{
-      setShow(textSpeller.slice(0,i+1))
-      i++;
-      if (i>=textSpeller.length) clearInterval(interval);
-    },70);
-    return () => clearInterval(interval)},[]);
-    
-  
-  return (
-    <div className="background-1">
-      <div className="background"></div>
-      <div className="headcontainer">
-        <div className='heading'>
-          <h1>DINESH</h1>
-           
-          <h1>A</h1>
-        </div>
-        
-        <div className="content">
-          <p>{show}<span className="cursor">|</span></p>
-        </div>
-      </div>
-      
-      <DarkModeToggler />
-      <div className="container">
-        
-        
-        
-      </div>
-    </div>
-      
-    
-    
-    
+function App(){
+  return(
+    <> 
+    <h1>Welcome to my React App</h1> 
+    </>
   )
 }
 
