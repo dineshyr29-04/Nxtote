@@ -13,7 +13,7 @@ function Navbar() {
       <div className="navbar-container">
         <div classname="navbar-logo">
           <link to="/">
-            <img src="" alt="logo" classname="navbar-logo" />
+            <img src="../assets/react.svg" alt="logo" classname="navbar-logo" />
           </link>
         </div>
         <div classname="navbar-menu">
