@@ -25,7 +25,6 @@ function Home() {
   const handleToggleComplete = (id) => {
     const updatedtasks = tasks.map((task) => {
       if (task.id == id) {
-        settaskcom([task]);
         return {
           ...task,
           completed: !task.completed,
@@ -70,19 +69,19 @@ function Home() {
       <div className="filter-section">
         <button
           className={`filter-btn ${filter === "all" ? "active" : ""}`}
-          onClick={setfilter("all")}
+          onClick={()=>setfilter("all")}
         >
           All
         </button>
         <button
           className={`filter-btn ${filter === "completed" ? "active" : ""}`}
-          onClick={setfilter("completed")}
+          onClick={()=>setfilter("completed")}
         >
           Completed
         </button>
         <button
           className={`filter-btn ${filter === "pending" ? "active" : ""}`}
-          onClick={setfilter("pending")}
+          onClick={()=>setfilter("pending")}
         >
           Pending
         </button>
