@@ -3,7 +3,7 @@ import "./Home.css";
 function Home() {
   const [tasks, setTasks] = useState([]);
   const [value, setValue] = useState("");
-
+  const [taskcom,settaskcom]=useState([]);
   const handleAddTask = () => {
     if (value.trim() === "") return;
 
@@ -24,6 +24,7 @@ function Home() {
   const handleToggleComplete = (id) => {
     const updatedtasks = tasks.map((task) => {
       if (task.id == id) {
+        settaskcom([task])
         return {
           ...task,
           completed: !task.completed,
@@ -34,7 +35,12 @@ function Home() {
 
     setTasks(updatedtasks);
   };
-
+  const handleSortCompleted=()=>{
+    
+    const completedtask=tasks.filter((task)=>(
+      task => task.completed
+    ))
+  }
   return (
     <div className="home-container">
       <h1 className="home-title">Task Manager</h1>
