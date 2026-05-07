@@ -3,8 +3,8 @@ import "./Home.css";
 function Home() {
   const [tasks, setTasks] = useState([]);
   const [value, setValue] = useState("");
-  const [taskcom, settaskcom] = useState([]);
-  const [filter,setfilter]=useState("all");
+  const [filter, setfilter] = useState("all");
+
   const handleAddTask = () => {
     if (value.trim() === "") return;
 
@@ -36,15 +36,15 @@ function Home() {
 
     setTasks(updatedtasks);
   };
-  const handleSort= () => {
-    if (filter==="completed"){
-      tasks.filter((task)=>task.completed);  
+  const filterTasks = tasks.filter((task) => {
+    if (filter === "completed") {
+      return task.completed;
     }
-    if (filter==="pending"){
-      tasks.filter((task)=>!task.completed);
+    if (filter === "pending") {
+      return !task.completed;
     }
     return true;
-  };
+  });
   return (
     <div className="home-container">
       <h1 className="home-title">Task Manager</h1>
@@ -65,14 +65,20 @@ function Home() {
 
       {/* Filter Section (for future use) */}
       <div className="filter-section">
-        <button className="filter-btn active" onClick={useState("all")}>All</button>
-        <button className="filter-btn" onClick={useState("completed")}>Completed</button>
-        <button className="filter-btn" onClick={useState("pending")}>Pending</button>
+        <button className="filter-btn active" onClick={useState("all")}>
+          All
+        </button>
+        <button className="filter-btn" onClick={useState("completed")}>
+          Completed
+        </button>
+        <button className="filter-btn" onClick={useState("pending")}>
+          Pending
+        </button>
       </div>
 
       {/* Task List */}
       <ul className="task-list">
-        {tasks.map((task) => {
+        {filterTasks.map((task) => {
           return (
             <li
               key={task.id}
