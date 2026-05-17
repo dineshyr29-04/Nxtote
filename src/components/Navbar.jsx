@@ -2,13 +2,13 @@ import { Link, NavLink } from "react-router-dom";
 
 const navbarlinks = [
   { name: "Home", path: "/home" },
-  { name: "About", path: "/about" },
-  { name: "Contact", path: "/contact" },
+  { name: "Charu", path: "/charu" },
+  { name: "Dinesh", path: "/contact" },
 ];
 function Navbar() {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-700/70 bg-slate-900/95 backdrop-blur">
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="fixed w-[100%] inset-x-0 top-0 z-50 border-b border-slate-700/70 bg-slate-900/95 backdrop-blur">
+      <div className="mx-auto flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:px-8">
         <div>
           <Link to="/" className="inline-flex items-center">
             <img

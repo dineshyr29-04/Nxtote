@@ -1,140 +1,325 @@
 import { useState } from "react";
 
 function Home() {
+
   const [tasks, setTasks] = useState([]);
   const [value, setValue] = useState("");
   const [filter, setFilter] = useState("all");
 
+
   const handleAddTask = () => {
     if (value.trim() === "") return;
 
-    const newtasks = {
+    const newTask = {
       id: Date.now(),
       text: value,
       completed: false,
+      owner: "you",
     };
 
-    setTasks([...tasks, newtasks]);
+    setTasks([...tasks, newTask]);
+
     setValue("");
   };
 
+
   const handleDeleteTask = (id) => {
-    const newtask = tasks.filter((task) => task.id !== id);
-    setTasks(newtask);
+    const updatedTasks = tasks.filter((task) => task.id !== id);
+
+    setTasks(updatedTasks);
   };
 
+
+
   const handleToggleComplete = (id) => {
-    const updatedtasks = tasks.map((task) => {
+    const updatedTasks = tasks.map((task) => {
       if (task.id === id) {
         return {
           ...task,
           completed: !task.completed,
         };
       }
+
       return task;
     });
 
-    setTasks(updatedtasks);
+    setTasks(updatedTasks);
   };
-  const filterTasks = tasks.filter((task) => {
+
+
+  const filteredTasks = tasks.filter((task) => {
     if (filter === "completed") {
       return task.completed;
     }
+
     if (filter === "pending") {
       return !task.completed;
     }
+
     return true;
   });
 
+
   return (
-    <section className="mx-auto w-full max-w-2xl rounded-2xl border border-slate-700/60 bg-slate-900/80 p-6 shadow-2xl shadow-slate-950/40 sm:p-8">
-      <h1 className="mb-6 text-center text-3xl font-bold tracking-tight text-white">
-        Task Manager
-      </h1>
+    <div className="min-w-full min-h-screen p-10 bg-black text-white flex gap-10">
+      <section className="flex flex-col gap-5">
+        <h1 className="text-blue-500 text-lg">Dinesh</h1>
+        <div className="mx-10 min-w-[50vh] min-h-screen flex justify-center">
+          <div className="w-full flex items-center gap-5">
+          <input
+            type="text"
+            value={value}
+            placeholder="Enter Your Task..."
+            className="
+              w-full
+              p-3
+              border
+              border-white
+              rounded-lg
+              bg-transparent
+              outline-none
+              hover:border-blue-500
+              focus:border-blue-500
+            "
+            onChange={(e) => setValue(e.target.value)}
+          />
 
-      <div className="mb-4 flex gap-2">
-        <input
-          type="text"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder="Enter a task..."
-          className="w-full rounded-lg border border-slate-600 bg-slate-950/80 px-3 py-2 text-slate-100 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-400/30"
-        />
-        <button
-          className="rounded-lg bg-emerald-500 px-4 py-2 font-medium text-white transition hover:bg-emerald-600"
-          onClick={handleAddTask}
-        >
-          Add
-        </button>
-      </div>
+          <button
+            onClick={handleAddTask}
+            className="
+              bg-white
+              text-black
+              px-5
+              py-3
+              rounded-lg
+              hover:scale-105
+              transition
+            "
+          >
+            Add Task
+          </button>
+            </div>
 
-      <div className="mb-4 grid grid-cols-3 gap-2">
-        <button
-          className={`rounded-lg px-3 py-2 text-sm font-medium transition ${
-            filter === "all"
-              ? "bg-sky-400 text-slate-950"
-              : "bg-slate-800 text-slate-300 hover:bg-slate-700"
-          }`}
-          onClick={() => setFilter("all")}
-        >
-          All
-        </button>
-        <button
-          className={`rounded-lg px-3 py-2 text-sm font-medium transition ${
-            filter === "completed"
-              ? "bg-sky-400 text-slate-950"
-              : "bg-slate-800 text-slate-300 hover:bg-slate-700"
-          }`}
-          onClick={() => setFilter("completed")}
-        >
-          Completed
-        </button>
-        <button
-          className={`rounded-lg px-3 py-2 text-sm font-medium transition ${
-            filter === "pending"
-              ? "bg-sky-400 text-slate-950"
-              : "bg-slate-800 text-slate-300 hover:bg-slate-700"
-          }`}
-          onClick={() => setFilter("pending")}
-        >
-          Pending
-        </button>
-      </div>
 
-      <ul className="space-y-2">
-        {filterTasks.map((task) => {
-          return (
-            <li
-              key={task.id}
-              className="flex items-center justify-between rounded-lg bg-slate-800 px-3 py-2"
-            >
-              <span
-                className={`text-slate-100 ${
-                  task.completed ? "text-slate-400 line-through" : ""
-                }`}
+        <div className="flex gap-5">
+          <button
+            onClick={() => setFilter("all")}
+            className={`
+              px-4 py-2 rounded-lg transition
+              ${filter === "all" ? "bg-blue-500" : "bg-gray-700"}
+            `}
+          >
+            All
+          </button>
+
+          <button
+            onClick={() => setFilter("completed")}
+            className={`
+              px-4 py-2 rounded-lg transition
+              ${filter === "completed" ? "bg-green-500" : "bg-gray-700"}
+            `}
+          >
+            Completed
+          </button>
+
+          <button
+            onClick={() => setFilter("pending")}
+            className={`
+              px-4 py-2 rounded-lg transition
+              ${filter === "pending" ? "bg-red-500" : "bg-gray-700"}
+            `}
+          >
+            Pending
+          </button>
+        </div>
+        <ul className="flex flex-col gap-4 mt-5">
+          {filteredTasks.map((task) => {
+            return (
+              <li
+                key={task.id}
+                className={`
+                  flex
+                  items-center
+                  justify-between
+                  p-4
+                  rounded-lg
+                  bg-gray-900
+                  border
+                  border-gray-700
+                  ${task.completed ? "opacity-60" : ""}
+                `}
               >
-                {task.text}
-              </span>
-              <div className="flex gap-2">
-                <button
-                  className="rounded bg-emerald-500 px-2 py-1 text-white transition hover:bg-emerald-600"
-                  onClick={() => handleToggleComplete(task.id)}
+                <span
+                  className={`
+                    text-lg
+                    ${task.completed ? "line-through" : ""}
+                  `}
                 >
-                  ✔
-                </button>
+                  {task.text}
+                </span>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => handleToggleComplete(task.id)}
+                    className="
+                      bg-green-500
+                      px-4
+                      py-2
+                      rounded-lg
+                      hover:scale-105
+                      transition
+                    "
+                  >
+                    Finish
+                  </button>
 
-                <button
-                  className="rounded bg-red-500 px-2 py-1 text-white transition hover:bg-red-600"
-                  onClick={() => handleDeleteTask(task.id)}
+                  <button
+                    onClick={() => handleDeleteTask(task.id)}
+                    className="
+                      bg-red-500
+                      px-4
+                      py-2
+                      rounded-lg
+                      hover:scale-105
+                      transition
+                    "
+                  >
+                    Delete
+                  </button>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+        </div>
+      </section>
+      <section className="flex flex-col gap-5">
+        <div className="w-full flex items-center gap-5">
+          <input
+            type="text"
+            value={value}
+            placeholder="Enter Your Task..."
+            className="
+              w-full
+              p-3
+              border
+              border-white
+              rounded-lg
+              bg-transparent
+              outline-none
+              hover:border-blue-500
+              focus:border-blue-500
+            "
+            onChange={(e) => setValue(e.target.value)}
+          />
+
+          <button
+            onClick={handleAddTask}
+            className="
+              bg-white
+              text-black
+              px-5
+              py-3
+              rounded-lg
+              hover:scale-105
+              transition
+            "
+          >
+            Add Task
+          </button>
+        </div>
+
+
+        <div className="flex gap-5">
+          <button
+            onClick={() => setFilter("all")}
+            className={`
+              px-4 py-2 rounded-lg transition
+              ${filter === "all" ? "bg-blue-500" : "bg-gray-700"}
+            `}
+          >
+            All
+          </button>
+
+          <button
+            onClick={() => setFilter("completed")}
+            className={`
+              px-4 py-2 rounded-lg transition
+              ${filter === "completed" ? "bg-green-500" : "bg-gray-700"}
+            `}
+          >
+            Completed
+          </button>
+
+          <button
+            onClick={() => setFilter("pending")}
+            className={`
+              px-4 py-2 rounded-lg transition
+              ${filter === "pending" ? "bg-red-500" : "bg-gray-700"}
+            `}
+          >
+            Pending
+          </button>
+        </div>
+        <ul className="flex flex-col gap-4 mt-5">
+          {filteredTasks.map((task) => {
+            return (
+              <li
+                key={task.id}
+                className={`
+                  flex
+                  items-center
+                  justify-between
+                  p-4
+                  rounded-lg
+                  bg-gray-900
+                  border
+                  border-gray-700
+                  ${task.completed ? "opacity-60" : ""}
+                `}
+              >
+                <span
+                  className={`
+                    text-lg
+                    ${task.completed ? "line-through" : ""}
+                  `}
                 >
-                  ✖
-                </button>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-    </section>
+                  {task.text}
+                </span>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => handleToggleComplete(task.id)}
+                    className="
+                      bg-green-500
+                      px-4
+                      py-2
+                      rounded-lg
+                      hover:scale-105
+                      transition
+                    "
+                  >
+                    Finish
+                  </button>
+
+                  <button
+                    onClick={() => handleDeleteTask(task.id)}
+                    className="
+                      bg-red-500
+                      px-4
+                      py-2
+                      rounded-lg
+                      hover:scale-105
+                      transition
+                    "
+                  >
+                    Delete
+                  </button>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    </div>
   );
 }
 
