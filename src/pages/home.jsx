@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 
 function Home() {
   const [tasks, setTasks] = useState([]);
@@ -32,9 +32,7 @@ function Home() {
   const handleDeleteTask = (id) => {
     const deletedTask = tasks.find((task) => task.id === id);
 
-    const updatedTasks = tasks.filter(
-      (task) => task.id !== id
-    );
+    const updatedTasks = tasks.filter((task) => task.id !== id);
 
     setTasks(updatedTasks);
 
@@ -79,24 +77,23 @@ function Home() {
 
     return true;
   });
+  useEffect(()=>{
+    localStorage.setItem(
+      "tasks",
+      JSON.stringify(tasks)
+    );
+  },[tasks])
+  const yourTasks = filteredTasks.filter((task) => task.owner === "you");
 
-  const yourTasks = filteredTasks.filter(
-    (task) => task.owner === "you"
-  );
-
-  const herTasks = filteredTasks.filter(
-    (task) => task.owner === "her"
-  );
+  const herTasks = filteredTasks.filter((task) => task.owner === "her");
 
   return (
     <div className="w-full min-h-screen bg-black text-white p-10">
-
       <h1 className="text-5xl font-bold text-center mb-12">
         Couple Task Board 💖
       </h1>
 
       <div className="flex gap-5 mb-10">
-
         <select
           value={selectedUser}
           onChange={(e) => setSelectedUser(e.target.value)}
@@ -120,17 +117,13 @@ function Home() {
         >
           Add Task
         </button>
-
       </div>
 
       <div className="flex gap-5 mb-10">
-
         <button
           onClick={() => setFilter("all")}
           className={`px-5 py-3 rounded-xl transition ${
-            filter === "all"
-              ? "bg-blue-500"
-              : "bg-zinc-800"
+            filter === "all" ? "bg-blue-500" : "bg-zinc-800"
           }`}
         >
           All
@@ -139,9 +132,7 @@ function Home() {
         <button
           onClick={() => setFilter("completed")}
           className={`px-5 py-3 rounded-xl transition ${
-            filter === "completed"
-              ? "bg-green-500"
-              : "bg-zinc-800"
+            filter === "completed" ? "bg-green-500" : "bg-zinc-800"
           }`}
         >
           Completed
@@ -150,187 +141,115 @@ function Home() {
         <button
           onClick={() => setFilter("pending")}
           className={`px-5 py-3 rounded-xl transition ${
-            filter === "pending"
-              ? "bg-red-500"
-              : "bg-zinc-800"
+            filter === "pending" ? "bg-red-500" : "bg-zinc-800"
           }`}
         >
           Pending
         </button>
-
       </div>
 
       <div className="grid grid-cols-3 gap-8">
-
         {/* YOUR TASKS */}
 
         <section className="bg-zinc-900 rounded-3xl p-6 border border-zinc-800">
-
           <div className="flex items-center justify-between mb-8">
-
-            <h2 className="text-3xl font-bold text-blue-400">
-              Your Tasks
-            </h2>
+            <h2 className="text-3xl font-bold text-blue-400">Your Tasks</h2>
 
             <span className="bg-blue-500 px-4 py-2 rounded-full text-sm">
               You
             </span>
-
           </div>
 
           <ul className="flex flex-col gap-4">
-
             {yourTasks.map((task) => (
-
               <li
                 key={task.id}
                 className={`flex items-center justify-between p-4 rounded-2xl bg-black border border-zinc-800 ${
                   task.completed ? "opacity-50" : ""
                 }`}
               >
-
                 <div>
-                  <p className={`text-lg ${
-                    task.completed ? "line-through" : ""
-                  }`}>
+                  <p
+                    className={`text-lg ${
+                      task.completed ? "line-through" : ""
+                    }`}
+                  >
                     {task.text}
                   </p>
                 </div>
 
                 <div className="flex gap-3">
-
                   <button
-                    onClick={() =>
-                      handleToggleComplete(task.id)
-                    }
+                    onClick={() => handleToggleComplete(task.id)}
                     className="px-4 py-2 bg-green-500 rounded-xl hover:scale-105 transition"
                   >
                     Finish
                   </button>
 
                   <button
-                    onClick={() =>
-                      handleDeleteTask(task.id)
-                    }
+                    onClick={() => handleDeleteTask(task.id)}
                     className="px-4 py-2 bg-red-500 rounded-xl hover:scale-105 transition"
                   >
                     Delete
                   </button>
-
                 </div>
-
               </li>
-
             ))}
-
           </ul>
-
         </section>
-
-
 
         {/* HER TASKS */}
 
         <section className="bg-pink-950 rounded-3xl p-6 border border-pink-900">
-
           <div className="flex items-center justify-between mb-8">
-
-            <h2 className="text-3xl font-bold text-pink-300">
-              Her Tasks
-            </h2>
+            <h2 className="text-3xl font-bold text-pink-300">Her Tasks</h2>
 
             <span className="bg-pink-500 px-4 py-2 rounded-full text-sm">
               Her
             </span>
-
           </div>
 
           <ul className="flex flex-col gap-4">
-
             {herTasks.map((task) => (
-
               <li
                 key={task.id}
                 className={`flex items-center justify-between p-4 rounded-2xl bg-black border border-pink-900 ${
                   task.completed ? "opacity-50" : ""
                 }`}
               >
-
                 <div>
-                  <p className={`text-lg ${
-                    task.completed ? "line-through" : ""
-                  }`}>
+                  <p
+                    className={`text-lg ${
+                      task.completed ? "line-through" : ""
+                    }`}
+                  >
                     {task.text}
                   </p>
                 </div>
 
                 <div className="flex gap-3">
-
                   <button
-                    onClick={() =>
-                      handleToggleComplete(task.id)
-                    }
+                    onClick={() => handleToggleComplete(task.id)}
                     className="px-4 py-2 bg-green-500 rounded-xl hover:scale-105 transition"
                   >
                     Finish
                   </button>
 
                   <button
-                    onClick={() =>
-                      handleDeleteTask(task.id)
-                    }
+                    onClick={() => handleDeleteTask(task.id)}
                     className="px-4 py-2 bg-red-500 rounded-xl hover:scale-105 transition"
                   >
                     Delete
                   </button>
-
                 </div>
-
               </li>
-
             ))}
-
           </ul>
-
         </section>
 
-
-
-        {/* ACTIVITY FEED */}
-
-        <section className="bg-zinc-900 rounded-3xl p-6 border border-zinc-800">
-
-          <div className="flex items-center justify-between mb-8">
-
-            <h2 className="text-3xl font-bold text-yellow-400">
-              Activity Feed
-            </h2>
-
-            <span className="bg-yellow-500 text-black px-4 py-2 rounded-full text-sm">
-              Live
-            </span>
-
-          </div>
-
-          <ul className="flex flex-col gap-4">
-
-            {activities.map((activity) => (
-
-              <li
-                key={activity.id}
-                className="bg-black border border-zinc-800 p-4 rounded-2xl"
-              >
-                {activity.message}
-              </li>
-
-            ))}
-
-          </ul>
-
-        </section>
-
+        
+      
       </div>
-
     </div>
   );
 }
