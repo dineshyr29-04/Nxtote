@@ -1,4 +1,4 @@
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 
 function Home() {
   const [tasks, setTasks] = useState([]);
@@ -6,6 +6,30 @@ function Home() {
   const [filter, setFilter] = useState("all");
   const [selectedUser, setSelectedUser] = useState("you");
   const [activities, setActivities] = useState([]);
+
+  useEffect(() => {
+    const savedTasks = localStorage.getItem("tasks");
+
+    if (savedTasks) {
+      setTasks(JSON.parse(savedTasks));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+  useEffect(() => {
+    const savedActivities = localStorage.getItem("activities");
+
+    if (savedActivities) {
+      setActivities(JSON.parse(savedActivities));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("activities", JSON.stringify(activities));
+  }, [activities]);
 
   const handleAddTask = () => {
     if (value.trim() === "") return;
@@ -77,12 +101,7 @@ function Home() {
 
     return true;
   });
-  useEffect(()=>{
-    localStorage.setItem(
-      "tasks",
-      JSON.stringify(tasks)
-    );
-  },[tasks])
+
   const yourTasks = filteredTasks.filter((task) => task.owner === "you");
 
   const herTasks = filteredTasks.filter((task) => task.owner === "her");
@@ -149,8 +168,6 @@ function Home() {
       </div>
 
       <div className="grid grid-cols-3 gap-8">
-        {/* YOUR TASKS */}
-
         <section className="bg-zinc-900 rounded-3xl p-6 border border-zinc-800">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold text-blue-400">Your Tasks</h2>
@@ -168,15 +185,11 @@ function Home() {
                   task.completed ? "opacity-50" : ""
                 }`}
               >
-                <div>
-                  <p
-                    className={`text-lg ${
-                      task.completed ? "line-through" : ""
-                    }`}
-                  >
-                    {task.text}
-                  </p>
-                </div>
+                <p
+                  className={`text-lg ${task.completed ? "line-through" : ""}`}
+                >
+                  {task.text}
+                </p>
 
                 <div className="flex gap-3">
                   <button
@@ -197,8 +210,6 @@ function Home() {
             ))}
           </ul>
         </section>
-
-        {/* HER TASKS */}
 
         <section className="bg-pink-950 rounded-3xl p-6 border border-pink-900">
           <div className="flex items-center justify-between mb-8">
@@ -217,15 +228,11 @@ function Home() {
                   task.completed ? "opacity-50" : ""
                 }`}
               >
-                <div>
-                  <p
-                    className={`text-lg ${
-                      task.completed ? "line-through" : ""
-                    }`}
-                  >
-                    {task.text}
-                  </p>
-                </div>
+                <p
+                  className={`text-lg ${task.completed ? "line-through" : ""}`}
+                >
+                  {task.text}
+                </p>
 
                 <div className="flex gap-3">
                   <button
@@ -247,8 +254,28 @@ function Home() {
           </ul>
         </section>
 
-        
-      
+        <section className="bg-zinc-900 rounded-3xl p-6 border border-zinc-800">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-yellow-400">
+              Activity Feed
+            </h2>
+
+            <span className="bg-yellow-500 text-black px-4 py-2 rounded-full text-sm">
+              Live
+            </span>
+          </div>
+
+          <ul className="flex flex-col gap-4">
+            {activities.map((activity) => (
+              <li
+                key={activity.id}
+                className="bg-black border border-zinc-800 p-4 rounded-2xl"
+              >
+                {activity.message}
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
     </div>
   );
