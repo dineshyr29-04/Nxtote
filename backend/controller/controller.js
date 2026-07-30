@@ -1,8 +1,16 @@
-exports.getAllNotes = async (req, res) => {
+const serviceAllnotes=require('../services/notes.service.js').getAllNotes();
 
-    res.json({
-        message: "All Notes"
-    });
+exports.getAllNotes = async (req, res) => {
+    try {
+        const notes= await serviceAllnotes;
+        res.status(200).json(notes);
+    }
+    catch(error){
+        console.log(error);
+        res.status(500).json({
+            message: "Internal server error"
+        });
+    }
 
 };
 
