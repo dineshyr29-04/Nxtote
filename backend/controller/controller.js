@@ -1,4 +1,4 @@
-exports.getAllNotes = (req, res) => {
+exports.getAllNotes = async (req, res) => {
 
     res.json({
         message: "All Notes"

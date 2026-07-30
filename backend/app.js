@@ -1,7 +1,6 @@
 const express =require('express');
-const approuter=require('./routes/routes');
+const notesRouter=require('./routes/routes.js')
 const app=express();
-
 app.use(express.json());
-app.use('/notes',approuter);
+app.use("/",notesRouter); 
 module.exports=app;
