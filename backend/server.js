@@ -1,5 +1,7 @@
-const app=require('./app');
+// Load environment variables before importing application modules
 require('dotenv').config();
+const app = require('./app');
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
