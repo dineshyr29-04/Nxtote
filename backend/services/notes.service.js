@@ -27,8 +27,8 @@ exports.createNote = async (notedata) => {
 exports.updateNote = async (updates) => {
   const { data, error } = await supabase
     .from("notes")
-    .update(updates)
-    .eq("id", id)
+    .update(updates.updates)
+    .eq("id", updates.id)
     .select()
     .single();
 

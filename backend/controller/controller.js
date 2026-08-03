@@ -43,10 +43,10 @@ exports.updateNote = async (req, res) => {
     const { id } = req.params;
     const updates = req.body;
 
-    const updatedNote = await notesService.updateNote(id, updates);
+    const updatedNote = await notesService.updateNote({ id, updates });
 
     if (!updatedNote) {
-      res.status(404).json({
+      return res.status(404).json({
         message: "Note Not Found"
       });
     }
