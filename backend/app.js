@@ -1,5 +1,6 @@
 const express =require('express');
-const notesRouter=require('./routes/notesroutes.js')
+const notesRouter = require('./routes/notesroutes.js');
+const authrouter = require('./routes/authroute.js');
 const cors =require('cors');
 
 
@@ -10,5 +11,5 @@ app.use(cors());
 
 
 app.use("/",notesRouter);
-
+app.use("/register", authrouter);
 module.exports=app;
