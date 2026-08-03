@@ -11,5 +11,5 @@ app.use(cors());
 
 
 app.use("/",notesRouter);
-app.use("/register", authrouter);
+app.use("/auth", authrouter);
 module.exports=app;

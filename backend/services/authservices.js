@@ -8,3 +8,13 @@ exports.register = async (email, password) => {
   } 
   return data;
 }
+
+exports.login = async (credentials) => {
+  const { data, error } = await supabase.auth.signInWithPassword(credentials);
+
+  if (error) {
+    throw error;
+  }
+ 
+  return data;
+}
