@@ -10,3 +10,18 @@ exports.getAllNotes = async (req, res) => {
 
   return data;
 };
+
+exports.createNote=async (notedata)=>{
+  const {data , error} =await supabase
+        .from("notes")
+        .insert({
+          notedata
+        })
+        .select()
+        .single();
+
+        if (error) {
+          throw error;
+        }
+        return data;
+}

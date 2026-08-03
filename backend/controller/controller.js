@@ -13,10 +13,28 @@ exports.getAllNotes = async (req, res) => {
 
 };
 
-exports.createNote = (req, res) => {
+exports.createNote = async(req, res) => {
+    try {
+        const {title , content , folder_id} =req.body;
+        
+        if (!title || !content ){
+            res.status(400).json({
+                message:"Title and content are requried"
+            });
+        };
 
-    res.json({
-        message: "Create Note"
-    });
+        const note = await notesService.createNote({
+            title,
+            content,
+            folder_id
+        });
+
+        res.status(201).json(note);
+    }
+    catch (error){
+        res.status(500).json({
+            message:"Internal server error"
+        });
+    };
 
 };
