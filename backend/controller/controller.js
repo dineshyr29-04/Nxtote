@@ -1,40 +1,39 @@
-const notesService = require('../services/notes.service.js');
+const notesService = require("../services/notes.service.js");
 
 exports.getAllNotes = async (req, res) => {
-    try {
-        const notes = await notesService.getAllNotes();
-        res.status(200).json(notes);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            message: "Internal server error"
-        });
-    }
-
+  try {
+    const notes = await notesService.getAllNotes();
+    res.status(200).json(notes);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
 };
 
-exports.createNote = async(req, res) => {
-    try {
-        const {title , content , folder_id} =req.body;
-        
-        if (!title || !content ){
-            res.status(400).json({
-                message:"Title and content are requried"
-            });
-        };
+exports.createNote = async (req, res) => {
+  try {
+    const { title, content, owner, completed } = req.body;
 
-        const note = await notesService.createNote({
-            title,
-            content,
-            folder_id
-        });
-
-        res.status(201).json(note);
+    if (!title || !content) {
+      return res.status(400).json({
+        message: "Title and content are requried",
+      });
     }
-    catch (error){
-        res.status(500).json({
-            message:"Internal server error"
-        });
-    };
 
+    const note = await notesService.createNote({
+      title : title,
+      content :content,
+      owner: owner || 'you',
+      completed: completed ||false
+    });
+
+    return res.status(201).json(note);
+  } catch (error) {
+        console.error("Error in createNote:", error);
+        res.status(500).json({
+        message: "Internal server error",
+        });
+  }
 };

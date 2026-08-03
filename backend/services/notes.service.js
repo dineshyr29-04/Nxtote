@@ -14,9 +14,9 @@ exports.getAllNotes = async (req, res) => {
 exports.createNote=async (notedata)=>{
   const {data , error} =await supabase
         .from("notes")
-        .insert({
+        .insert(
           notedata
-        })
+      )
         .select()
         .single();
 
