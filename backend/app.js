@@ -1,5 +1,5 @@
 const express =require('express');
-const notesRouter=require('./routes/routes.js')
+const notesRouter=require('./routes/notesroutes.js')
 const cors =require('cors');
 
 
