@@ -14,4 +14,4 @@ app.use(cors());
 
 app.use("/",authenticateuser,notesRouter);
 app.use("/auth", authrouter);
-module.exports=app;
+module.exports = app;

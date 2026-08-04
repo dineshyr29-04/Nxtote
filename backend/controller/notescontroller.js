@@ -44,8 +44,8 @@ exports.updateNote = async (req, res) => {
   try {
     const { id } = req.params;
     const updates = req.body;
-
-    const updatedNote = await notesService.updateNote({ id, updates });
+    const userid = req.user.id;
+    const updatedNote = await notesService.updateNote({ id, userid, updates });
 
     if (!updatedNote) {
       return res.status(404).json({
@@ -65,7 +65,8 @@ exports.updateNote = async (req, res) => {
 exports.deleteNote = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletenote = await notesService.deleteNote(id);
+    const userid = req.user.id;
+    const deletenote = await notesService.deleteNote(id,userid);
 
     if (!deletenote) {
       console.log("note not deleted");

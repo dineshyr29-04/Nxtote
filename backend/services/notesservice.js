@@ -31,6 +31,7 @@ exports.updateNote = async (updates) => {
     .from("notes")
     .update(updates.updates)
     .eq("id", updates.id)
+    .eq("user_id",updates.userid)
     .select()
     .single();
 
@@ -41,11 +42,12 @@ exports.updateNote = async (updates) => {
   return data;
 };
 
-exports.deleteNote = async (id) => {
+exports.deleteNote = async (id,userid) => {
   const { data, error } = await supabase 
     
     .from("notes")
     .update({ is_deleted: true })
+    .eq("user_id",userid)
     .eq("id", id)
     .select();
 
