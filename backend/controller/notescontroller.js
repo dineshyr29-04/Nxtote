@@ -2,7 +2,7 @@ const notesService = require("../services/notesservice.js");
 
 exports.getAllNotes = async (req, res) => {
   try {
-    const notes = await notesService.getAllNotes();
+    const notes = await notesService.getAllNotes(req.user.id);
     res.status(200).json(notes);
   } catch (error) {
     console.log(error);
@@ -14,8 +14,10 @@ exports.getAllNotes = async (req, res) => {
 
 exports.createNote = async (req, res) => {
   try {
-    const { title, content, owner, completed } = req.body;
+    const { title, content, completed } = req.body;
 
+    const userid=req.user.id
+    const useremail = req.user.email;
     if (!title || !content) {
       return res.status(400).json({
         message: "Title and content are requried",
@@ -24,8 +26,8 @@ exports.createNote = async (req, res) => {
 
     const note = await notesService.createNote({
       title : title,
-      content :content,
-      owner: owner || 'you',
+      content: content,
+      user_id:userid,
       completed: completed ||false
     });
 

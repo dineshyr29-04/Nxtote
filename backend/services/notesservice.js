@@ -1,8 +1,9 @@
 const supabase = require("../lib/supabase");
-exports.getAllNotes = async (req, res) => {
+exports.getAllNotes = async (userid) => {
   const { data, error } = await supabase
         .from("notes")
         .select("*")
+        .eq("user_id",userid)
         .eq("is_deleted",false)
 
   if (error) {
@@ -54,3 +55,4 @@ exports.deleteNote = async (id) => {
 
   return data.length > 0;
 }
+
