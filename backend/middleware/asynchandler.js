@@ -1,7 +1,7 @@
-modules.exports = (fn) => {
+module.exports = (fn) => {
   return (req, res, next) => {
     Promise
-      .resolve(fn(res, req, next))
+      .resolve(fn(req, res, next))
       .catch(next);
   }
 }

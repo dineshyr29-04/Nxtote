@@ -10,8 +10,11 @@ const app=express();
 
 app.use(express.json());
 app.use(cors());
-app.use(errorhandler);
 
 app.use("/",authenticateuser,notesRouter);
 app.use("/auth", authrouter);
+
+
+app.use(errorhandler);
+
 module.exports = app;
