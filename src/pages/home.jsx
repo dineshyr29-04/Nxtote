@@ -1,36 +1,41 @@
 import { useState, useEffect } from "react";
+import { getNotes } from "../api/notesapi";
+function getStoredValue(key, fallback) {
+  try {
+    const storedValue = localStorage.getItem(key);
+
+    return storedValue ? JSON.parse(storedValue) : fallback;
+  } catch {
+    return fallback;
+  }
+}
 
 function Home() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => getStoredValue("tasks", []));
   const [value, setValue] = useState("");
   const [filter, setFilter] = useState("all");
   const [selectedUser, setSelectedUser] = useState("you");
-  const [activities, setActivities] = useState([]);
-
-  useEffect(() => {
-    const savedTasks = localStorage.getItem("tasks");
-
-    if (savedTasks) {
-      setTasks(JSON.parse(savedTasks));
-    }
-  }, []);
+  const [activities, setActivities] = useState(() =>
+    getStoredValue("activities", [])
+  );
+  const [loader,setlader]=useState(false);
+  const [notes,setNotes]=useState([])
 
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
   useEffect(() => {
-    const savedActivities = localStorage.getItem("activities");
-
-    if (savedActivities) {
-      setActivities(JSON.parse(savedActivities));
-    }
-  }, []);
-
-  useEffect(() => {
     localStorage.setItem("activities", JSON.stringify(activities));
   }, [activities]);
 
+  useEffect(() => {
+    const loadnotes = async () => {
+      const data = await getNotes();
+      setNotes(data);
+    }
+    loadnotes();
+  })
   const handleAddTask = () => {
     if (value.trim() === "") return;
 
