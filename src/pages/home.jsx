@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 
 function Home() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+    const savedtask = localStorage.getItem("single_user_tasks");
+    return savedtask ? JSON.parse(savedtask) : [];
+  });
   const [newTaskText, setNewTaskText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Work");
   const [selectedPriority, setSelectedPriority] = useState("Medium");
@@ -10,15 +13,12 @@ function Home() {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   
-  const [activities, setActivities] = useState([]);
-
-  // Load from localStorage on mount
-  useEffect(() => {
-    const savedTasks = localStorage.getItem("single_user_tasks");
+  const [activities, setActivities] = useState(() => {
     const savedActivities = localStorage.getItem("single_user_activities");
-    if (savedTasks) setTasks(JSON.parse(savedTasks));
-    if (savedActivities) setActivities(JSON.parse(savedActivities));
-  }, []);
+    return savedActivities ? JSON.parse(savedActivities) : [];
+  });
+
+  
 
   // Save to localStorage when state changes
   useEffect(() => {
@@ -269,7 +269,7 @@ function Home() {
         <main className="lg:col-span-8 flex flex-col gap-6">
           
           {/* Tasks Container */}
-          <div className="bg-slate-900/20 border border-slate-900 rounded-3xl p-6 min-h-[400px]">
+          <div className="bg-slate-900/20 border border-slate-900 rounded-3xl p-6 min-h-100">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-extrabold text-slate-100 flex items-center gap-2">
                 <span>📋</span> Tasks List
@@ -303,7 +303,7 @@ function Home() {
                         onClick={() => handleToggleComplete(task.id)}
                         className={`w-6 h-6 rounded-lg border flex items-center justify-center transition-all ${
                           task.completed
-                            ? "bg-gradient-to-r from-violet-500 to-fuchsia-500 border-transparent text-white"
+                            ? "bg-linear-to-r from-violet-500 to-fuchsia-500 border-transparent text-white"
                             : "border-slate-700 hover:border-fuchsia-400"
                         }`}
                       >
@@ -369,7 +369,7 @@ function Home() {
             {activities.length === 0 ? (
               <p className="text-sm text-slate-500 italic py-4">No recent activity logs.</p>
             ) : (
-              <ul className="flex flex-col gap-2 max-h-[160px] overflow-y-auto pr-2 custom-scrollbar">
+              <ul className="flex flex-col gap-2 max-h-40 overflow-y-auto pr-2 custom-scrollbar">
                 {activities.map((act) => (
                   <li
                     key={act.id}
