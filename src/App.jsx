@@ -1,7 +1,8 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/home";
 import Login from "./pages/login";
+import ProtectedRoute from "./components/Protectedroute"; 
 
 function App() {
   return (
@@ -9,8 +10,7 @@ function App() {
       <Navbar />
       <main className="mx-auto w-full px-4 pb-8 pt-24 sm:px-6 lg:px-8">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>}></Route>
           <Route path="/login" element={<Login />} />
         </Routes>
       </main>

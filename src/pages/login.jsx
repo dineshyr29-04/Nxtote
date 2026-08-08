@@ -1,40 +1,59 @@
+import { login } from "../api/authapi";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import api from "../api/axios";
 function Login() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password) return;
 
-    setIsLoading(true);
-    // Simulate API delay
-    setTimeout(() => {
-      setIsLoading(false);
-      // Save mock login session to localStorage
-      localStorage.setItem("user_authenticated", "true");
-      localStorage.setItem("user_email", email);
-      if (isSignUp && name) {
-        localStorage.setItem("user_name", name);
+    if (!email || !password) {
+      return setError("Email and Password needed");
+    }
+    setLoading(true);
+    setError("");
+    try {
+      if (isSignUp) {
+        await api.post("/auth/signup", { email, password });
+        //sending them to signin page
+        setIsSignUp(false);
+        alert("signup is successful you can go with the signin");
+        
+      } else {
+        //sendind login request to express through /auth/login
+        const response = await api.post("/auth/login", { email, password });
+        const data = response.data;
+
+        const token = data.session?.access_token || data.user?.token;
+        if (token) {
+          localStorage.setItem("access_token", token)
+        }
+        localStorage.setItem("isuserauthenticated", "true");
+        localStorage.setItem(("user_email"), email);
+
+        navigate("/home");
       }
-      
-      // Redirect to home dashboard
-      navigate("/home");
-    }, 1500);
-  };
+    } catch (err) {
+      console.error("Auth Error:", err);
+
+      setError(err.response?.data?.message || "Authentication failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const handleGuestLogin = () => {
-    setIsLoading(true);
+    setLoading(true);
     setTimeout(() => {
-      setIsLoading(false);
+      setLoading(false);
       localStorage.setItem("user_authenticated", "true");
       localStorage.setItem("user_email", "guest@workspace.com");
       localStorage.setItem("user_name", "Guest Explorer");
@@ -156,6 +175,9 @@ function Login() {
                 <div className={`h-full flex-1 transition-all duration-300 ${strength === 4 ? 'bg-emerald-500' : 'bg-transparent'}`}></div>
               </div>
             </div>
+          )}
+          {error && (
+            <div className="test-xs text-rose-400 bg-rose-700 border border-rose-300 p-3 rounded-xs"> {error} </div>
           )}
 
           {/* Submit Action Button */}
