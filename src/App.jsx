@@ -10,7 +10,7 @@ function App() {
       <Navbar />
       <main className="mx-auto w-full px-4 pb-8 pt-24 sm:px-6 lg:px-8">
         <Routes>
-          <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>}></Route>
+          <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>}></Route>
           <Route path="/login" element={<Login />} />
         </Routes>
       </main>
