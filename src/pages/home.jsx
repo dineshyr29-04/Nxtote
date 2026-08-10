@@ -44,7 +44,7 @@ function Home() {
     if (hour < 18) return `Good afternoon, ${displayName} ☀️`;
     return `Good evening, ${displayName} 🌌`;
   };
-
+  
   const triggerToast = (message, type = "success") => {
     setToast({ show: true, message, type });
   };
