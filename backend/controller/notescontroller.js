@@ -6,21 +6,22 @@ exports.getAllNotes = asynchandler(async (req, res) => {
 });
 
 exports.createNote = asynchandler(async (req, res) => {
-  const { title, content, completed ,} = req.body;
+    const { text, category, priority, completed } = req.body;
   
       const userid=req.user.id
       const useremail = req.user.email;
-      if (!title || !content) {
+      if (!text || !category) {
         return res.status(400).json({
-          message: "Title and content are requried",
+          message: "Title and category are requried",
         });
       }
   
       const note = await notesService.createNote({
-        title : title,
-        content: content,
-        user_id:userid,
-        completed: completed ||false
+        title:text,
+        category ,
+        priority:priority ||"medium",
+        completed: completed || false,
+        user_id:userid
       });
   
       return res.status(201).json(note);
