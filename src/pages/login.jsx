@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authprovider";  
 import api from "../api/axios";
+import Toast from "../components/Toastnotification";
 function Login() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
@@ -10,6 +11,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [toast, setToast] = useState({ show: false, message: "", type: "success" });
   const navigate = useNavigate();
 
   const { loginUser } = useAuth();
@@ -26,8 +28,7 @@ function Login() {
         await api.post("/auth/signup", { email, password });
         //sending them to signin page
         setIsSignUp(false);
-        alert("signup is successful you can go with the signin");
-        
+        setToast({ show: true, message: "Signup successful! Please log in.", type: "success" });
       } else {
         //sendind login request to express through /auth/login
         const response = await api.post("/auth/login", { email, password });
@@ -215,6 +216,13 @@ function Login() {
         </div>
 
       </div>
+      {toast.show && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast({ ...toast, show: false })}
+        />
+      )}
     </div>
   );
 }
