@@ -3,9 +3,7 @@ import AuthContext from "./authcontext";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isauthenticated, setisauthenticated] = useState(() => {
-     
-  });
+  const [isauthenticated, setisauthenticated] = useState();
   const [loading, setloading] = useState(true);
 
   useEffect(() => {

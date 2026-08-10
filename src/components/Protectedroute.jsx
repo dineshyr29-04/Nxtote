@@ -1,9 +1,9 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/authprovider';
 const ProtectedRoute = ({children}) => {
-  const isAuthorised = useAuth();
+  const {isauthenticated }= useAuth();
 
-  if (isAuthorised) {
+  if (isauthenticated) {
     return children
   } else {
     return <Navigate to="/login" replace />

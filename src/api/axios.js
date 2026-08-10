@@ -14,5 +14,23 @@ api.interceptors.request.use(
     }
 
 );
+
+api.interceptors.response.use(
+
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("user_email");
+      localStorage.removeItem("user_name");
+      localStorage.removeItem("isuserauthenticated");
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  });
+  
+
+    
+
 export default api;
 

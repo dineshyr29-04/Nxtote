@@ -12,7 +12,7 @@ function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const { LoginUser } = useAuth();
+  const { loginUser } = useAuth();
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -34,9 +34,8 @@ function Login() {
         const data = response.data;
 
         const token = data.session?.access_token || data.user?.token;
-        LoginUser(token, email, name || "User");
-        
-
+        loginUser(token, email, name || "User");
+      
         navigate("/home");
       }
     } catch (err) {
@@ -51,13 +50,10 @@ function Login() {
   const handleGuestLogin = () => {
     setLoading(true);
     setTimeout(() => {
-      setLoading(false);
-      localStorage.setItem("user_authenticated", "true");
-      localStorage.setItem("user_email", "guest@workspace.com");
-      localStorage.setItem("user_name", "Guest Explorer");
+      loginUser("guest_token", "dineshyr2904@gmail.com", "Dinesh");
       navigate("/home");
     }, 1000);
-  };
+};
 
   // Basic password strength checker
   const getPasswordStrength = () => {
