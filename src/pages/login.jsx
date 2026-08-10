@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/authprovider";  
 import api from "../api/axios";
 function Login() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -11,6 +12,7 @@ function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const { LoginUser } = useAuth();
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -32,11 +34,8 @@ function Login() {
         const data = response.data;
 
         const token = data.session?.access_token || data.user?.token;
-        if (token) {
-          localStorage.setItem("access_token", token)
-        }
-        localStorage.setItem("isuserauthenticated", "true");
-        localStorage.setItem(("user_email"), email);
+        LoginUser(token, email, name || "User");
+        
 
         navigate("/home");
       }

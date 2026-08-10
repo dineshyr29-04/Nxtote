@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
-
+import { useAuth } from '../context/authprovider';
 const ProtectedRoute = ({children}) => {
-  const isAuthorised = localStorage.getItem("isuserauthenticated")==="true";
+  const isAuthorised = useAuth();
 
   if (isAuthorised) {
     return children
