@@ -7,7 +7,6 @@ exports.getAllNotes = asynchandler(async (req, res) => {
 
 exports.createNote = asynchandler(async (req, res) => {
     const { text, category, priority, completed } = req.body;
-  
       const userid=req.user.id
       const useremail = req.user.email;
       if (!text || !category) {

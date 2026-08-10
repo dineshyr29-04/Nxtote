@@ -13,7 +13,7 @@ exports.getAllNotes = async (userid) => {
   return data;
 };
 
-exports.createNote = async (notedata) => {
+exports.createNote = async(notedata) => {
   const { data, error } = await supabase
     .from("notes")
     .insert(notedata)

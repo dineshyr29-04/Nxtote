@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/authprovider";
-import { createNote } from "../api/notesapi";
-import { getNotes } from "../api/notesapi";
+import { createNote, getNotes, updateNote, deleteNote } from "../api/notesapi";
 import Toast from "../components/Toastnotification";
 import { Plus, Trash2, Check, Search, Calendar, ListTodo, Activity } from "lucide-react";
 
@@ -35,13 +34,23 @@ function Home() {
         localStorage.setItem("single_user_activities", JSON.stringify(activities));
     }, [activities]);
 
+
+    // getting the tasks from the supabase and storing in the thing
+    useEffect(() => {
+        const fetchnotes = async () => {
+            const note = await getNotes();
+            setTasks(note);
+        }
+        fetchnotes();
+    }, []);
     // Greeting helper based on time of day
     const getGreeting = () => {
         const hour = new Date().getHours();
         const displayName = user?.name || "Guest";
         if (hour < 12) return `Good morning, ${displayName} 🌅`;
         if (hour < 18) return `Good afternoon, ${displayName} ☀️`;
-        return `Good evening, ${displayName} 🌌`;
+        if (hour < 20) return `Good evening, ${displayName} 🌌`;
+        return `Good Night, ${displayName}`;
     };
 
     const triggerToast = (message, type = "success") => {
@@ -69,19 +78,7 @@ function Home() {
 
     // Toggle Checked Handler
     const handleToggleComplete = (id) => {
-        const updatedTasks = tasks.map((task) => {
-            if (task.id === id) {
-                const newStatus = !task.completed;
-                logActivity(`${newStatus ? "Completed" : "Reopened"} task: "${task.text}"`);
-                triggerToast(
-                    newStatus ? "Task completed! 🎉" : "Task reopened",
-                    newStatus ? "success" : "info",
-                );
-                return { ...task, completed: newStatus };
-            }
-            return task;
-        });
-        setTasks(updatedTasks);
+        
     };
 
     // Delete Task Handler
