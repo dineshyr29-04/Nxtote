@@ -7,8 +7,8 @@ import ProtectedRoute from "./components/Protectedroute";
 function App() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
-      <Navbar />
       <main className="mx-auto w-full px-4 pb-8 pt-24 sm:px-6 lg:px-8">
+      <Navbar />
         <Routes>
           <Route path="/" element={<Navigate to="/home" replace />}></Route>
           <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>}></Route>

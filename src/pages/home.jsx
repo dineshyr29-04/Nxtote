@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/authprovider";
+import { createNote } from "../api/notesapi";
 import Toast from "../components/Toastnotification";
 import { Plus, Trash2, Check, Search, Calendar, ListTodo, Activity } from "lucide-react";
 
@@ -50,22 +51,20 @@ function Home() {
   };
 
   // Add Task Handler
-  const handleAddTask = (e) => {
+  const handleAddTask = async(e) => {
     e.preventDefault();
-    if (!newTaskText.trim()) return;
-
-    const newTask = {
-      id: crypto.randomUUID(),
-      text: newTaskText.trim(),
-      completed: false,
+    if (!newTaskText) {
+      return "Task text is required";
+    }
+    const note = {
+      text: newTaskText,
       category: selectedCategory,
       priority: selectedPriority,
-      createdAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      completed: false,
     };
-
-    setTasks([newTask, ...tasks]);
-    logActivity(`Added task: "${newTask.text}"`);
-    triggerToast("Task added successfully!", "success");
+    const result = await createNote(note);
+    if (!result) return;
+    setTasks([...tasks, result]);
     setNewTaskText("");
   };
 
