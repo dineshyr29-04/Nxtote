@@ -126,13 +126,21 @@ function Home() {
     };
 
     // Delete Task Handler
-    const handleDeleteTask = (id) => {
-        const taskToDelete = tasks.find((task) => task.id === id);
-        if (!taskToDelete) return;
-
-        setTasks(tasks.filter((task) => task.id !== id));
-        logActivity(`Deleted task: "${taskToDelete.text}"`);
-        triggerToast("Task deleted.", "error");
+    const handleDeleteTask = async(id) => {
+        try {
+            const taskToDelete = tasks.find((task) => task.id === id);
+            if (!taskToDelete) return;
+            const deletetask = await deleteNote(id);
+            if (deletetask) {
+                setTasks(tasks.filter((task) => task.id !== id));
+                logActivity(`Deleted task: "${taskToDelete.text}"`);
+                triggerToast("Task deleted.");
+            }
+        }
+        catch (err) {
+            console.error(err);
+            triggerToast("Error in deleting the task");
+       }
     };
 
     // Activity feed logger
