@@ -25,6 +25,7 @@ function Home() {
     // UI Toast notification state
     const [toast, setToast] = useState({ show: false, message: "", type: "success" });
 
+    //state initialization for the 
     // Sync to localStorage
     useEffect(() => {
         localStorage.setItem("single_user_tasks", JSON.stringify(tasks));
@@ -77,7 +78,30 @@ function Home() {
     };
 
     // Toggle Checked Handler
-    const handleToggleComplete = (id) => {
+    const handleToggleComplete = async (id) => {
+        const tasktotoggle = tasks.find((task) => task.id === id);
+        if (!tasktotoggle) return;
+
+        const newstatus = !tasktotoggle;
+        try {
+            await updateNote(id, { completed: newstatus });
+            // if the database update is success then update the frontend with the deleted task.
+            const updatedTasks = tasks.map((task) => {
+                if (task.id === id) {
+                    logActivity(`${newstatus ? "completed" : "Reopened"} task ${task.text}`);
+                    triggerToast(
+                        newstatus ? "Task completed! 🎉" : "Task reopened",
+                        newstatus ? "success" : "info",
+                    );
+                    return [...tasks, { completed: newstatus }];
+                }
+                return tasks;
+            });
+            setTasks(updatedTasks);
+        } catch (error){
+            console.error(error);
+            triggerToast("Failed tom update the tasks.");
+        }
         
     };
 
