@@ -6,7 +6,7 @@ exports.getAllNotes = asynchandler(async (req, res) => {
 });
 
 exports.createNote = asynchandler(async (req, res) => {
-    const { text, category, priority, completed } = req.body;
+    const { text, category, content, priority, completed } = req.body;
       const userid=req.user.id
       const useremail = req.user.email;
       if (!text || !category) {
@@ -15,13 +15,14 @@ exports.createNote = asynchandler(async (req, res) => {
         });
       }
   
-      const note = await notesService.createNote({
-        title:text,
-        category ,
-        priority:priority ||"medium",
+    const note = await notesService.createNote({
+        title: text,
+        content: content,
+        category,
+        priority: priority || "medium",
         completed: completed || false,
-        user_id:userid
-      });
+        user_id: userid
+    });
   
       return res.status(201).json(note);
 });

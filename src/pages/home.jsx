@@ -40,9 +40,17 @@ function Home() {
     // getting the tasks from the supabase and storing in the thing
     useEffect(() => {
         const fetchnotes = async () => {
-            const note = await getNotes();
-            setTasks(note);
-        }
+            try {
+                const note = await getNotes();
+                const formattedNotes = note.map((item) => ({
+                    ...item,
+                    text: item.title || "",
+                }));
+                setTasks(formattedNotes);
+            } catch (error) {
+                console.error("Failed to load notes:", error);
+            }
+        };
         fetchnotes();
     }, []);
     // Greeting helper based on time of day
@@ -73,11 +81,20 @@ function Home() {
             priority: selectedPriority,
             completed: false,
         };
-        const result = await createNote(note);
-        if (!result) return;
-        setTasks([...tasks, result]);
-        setNewTaskText("");
-        setNewTaskContent("");
+        try {
+            const result = await createNote(note);
+            if (!result) return;
+            const formattedNewNote = {
+                ...result,
+                text: result.title,
+            };
+            setTasks([...tasks, formattedNewNote]);
+            setNewTaskText("");
+            setNewTaskContent("");
+        } catch (error) {
+            console.error("Failed to add task:", error);
+            triggerToast("Failed to add task.", "error");
+        }
     };
 
     // Toggle Checked Handler
