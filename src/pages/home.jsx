@@ -10,6 +10,7 @@ function Home() {
     // State initialization loading from LocalStorage
     const [tasks, setTasks] = useState([]);
     const [newTaskText, setNewTaskText] = useState("");
+    const [newTaskContent, setNewTaskContent] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("Work");
     const [selectedPriority, setSelectedPriority] = useState("Medium");
 
@@ -67,6 +68,7 @@ function Home() {
 
         const note = {
             text: newTaskText,
+            content: newTaskContent,
             category: selectedCategory,
             priority: selectedPriority,
             completed: false,
@@ -75,6 +77,7 @@ function Home() {
         if (!result) return;
         setTasks([...tasks, result]);
         setNewTaskText("");
+        setNewTaskContent("");
     };
 
     // Toggle Checked Handler
@@ -245,8 +248,15 @@ function Home() {
                                 type="text"
                                 value={newTaskText}
                                 onChange={(e) => setNewTaskText(e.target.value)}
-                                placeholder="What needs attention?"
+                                placeholder="Task Title"
                                 className="w-full px-4 py-3 bg-slate-950 border border-slate-800/80 rounded-xl outline-none focus:border-fuchsia-500/50 focus:ring-1 focus:ring-fuchsia-500/20 text-sm transition"
+                            />
+                            <textarea
+                                value={newTaskContent}
+                                onChange={(e) => setNewTaskContent(e.target.value)}
+                                placeholder="Task Details or Content..."
+                                rows={2}
+                                className="w-full px-4 py-3 bg-slate-950 border border-slate-800/80 rounded-xl outline-none focus:border-fuchsia-500/50 focus:ring-1 focus:ring-fuchsia-500/20 text-sm transition resize-none"
                             />
 
                             <div className="grid grid-cols-2 gap-3">
@@ -411,6 +421,11 @@ function Home() {
                                                 >
                                                     {task.text}
                                                 </p>
+                                                {task.content && (
+                                                    <p className={`text-xs text-slate-400 mt-1 leading-relaxed ${task.completed ? "line-through text-slate-650" : ""}`}>
+                                                        {task.content}
+                                                    </p>
+                                                )}
                                                 <div className="flex items-center gap-2 mt-2 flex-wrap">
                                                     <span className="text-[10px] text-slate-400 font-medium flex items-center gap-1">
                                                         {getCategoryIcon(task.category)}{" "}
