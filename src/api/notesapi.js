@@ -11,7 +11,7 @@ export const createNote = async (note) => {
 }
 
 export const updateNote = async (id, updates) => {
-    const response = await api.post(`/notes/${id}`,updates);
+    const response = await api.patch(`/notes/${id}`,updates);
     return response.data;
 }
 
