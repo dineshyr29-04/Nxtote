@@ -25,7 +25,7 @@ function Login() {
     setError("");
     try {
       if (isSignUp) {
-        await api.post("/auth/signup", { email, password });
+        await api.post("/auth/signup", { name,email, password });
         //sending them to signin page
         setIsSignUp(false);
         setToast({ show: true, message: "Signup successful! Please log in.", type: "success" });

@@ -2,7 +2,7 @@ const authservice = require("../services/authservices.js");
 
 exports.register = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { name, email, password } = req.body;
 
         if (!email || !password) {
             console.log("Email or password any one is wrong");
