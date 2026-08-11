@@ -82,7 +82,7 @@ function Home() {
         const tasktotoggle = tasks.find((task) => task.id === id);
         if (!tasktotoggle) return;
 
-        const newstatus = !tasktotoggle;
+        const newstatus = !tasktotoggle.completed;
         try {
             await updateNote(id, { completed: newstatus });
             // if the database update is success then update the frontend with the deleted task.
@@ -93,9 +93,9 @@ function Home() {
                         newstatus ? "Task completed! 🎉" : "Task reopened",
                         newstatus ? "success" : "info",
                     );
-                    return [...tasks, { completed: newstatus }];
+                    return {...task, completed: newstatus };
                 }
-                return tasks;
+                return task;
             });
             setTasks(updatedTasks);
         } catch (error){
