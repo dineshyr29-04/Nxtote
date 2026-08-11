@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
         }
 
         const user = await authservice.register(email, password);
-        console.log("LoggedIn");
+        console.log("Registered");
         res.status(201).json(user);
     } catch (error) {
         console.log(error);
@@ -33,7 +33,7 @@ exports.login = async (req, res) => {
         }
 
         const data = await authservice.login({ email, password });
-        console.log("loggedout");
+        console.log("loggedin");
         res.status(200).json(data);
     } catch (error) {
         console.log(error);
