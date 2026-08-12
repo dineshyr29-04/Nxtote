@@ -1,5 +1,5 @@
 const notesService = require("../services/notesservice.js");
-const asynchandler = require("../middleware/asynchandler.js");
+const asynchandler = require("../utils/asynchandler.js");
 exports.getAllNotes = asynchandler(async (req, res) => {
     const notes = await notesService.getAllNotes(req.user.id);
     res.status(200).json(notes);

@@ -1,4 +1,5 @@
 const supabase = require("../lib/supabase");
+const { asynchandler } = require("../utils/asynchandler");
 exports.getAllNotes = async (userid) => {
     const { data, error } = await supabase
         .from("notes")

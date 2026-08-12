@@ -1,49 +1,29 @@
 const authservice = require("../services/authservices.js");
-
-exports.register = async (req, res) => {
-    try {
-        const { name, email, password } = req.body;
-        console.log({ name, email, password });
-        if (!email || !password) {
-            console.log("Email or password any one is wrong");
-            return res.status(400).json({
-                message: "User Credentials are Required",
-            });
-        }
-
-        const user = await authservice.register(name, email, password);
-        console.log("Registered");
-        res.status(201).json(user);
-    } catch (error) {
-        console.log(error);
-        if (error.message==="User already registered") {
-            return res.status(400).json({
-                message:"User already registered"
-            })
-        }
-        res.status(500).json({
-            message: "Internal Server Error",
+const asynchandler = require("../utils/asynchandler.js");
+exports.register = asynchandler(async (req, res) => {
+    const { name, email, password } = req.body;
+    console.log({ name, email, password });
+    if (!email || !password) {
+        console.log("Email or password any one is wrong");
+        return res.status(400).json({
+            message: "User Credentials are Required",
         });
     }
-};
+    const user = await authservice.register(name, email, password);
+    console.log("Registered");
+    res.status(201).json(user);
+});
 
-exports.login = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        if (!email || !password) {
-            console.log("error in passwords");
-            return res.status(400).json({
-                message: "Required email and password.",
-            });
-        }
-
-        const data = await authservice.login({ email, password });
-        console.log("loggedin");
-        res.status(200).json(data);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            message: "Login Failed Wrong Email or Password",
+exports.login = asynchandler(async (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        console.log("error in passwords");
+        return res.status(400).json({
+            message: "Required email and password.",
         });
     }
-};
+
+    const data = await authservice.login({ email, password });
+    console.log("loggedin");
+    res.status(200).json(data);
+});
