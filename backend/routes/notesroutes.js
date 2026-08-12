@@ -9,8 +9,8 @@ const router = express.Router();
 router.get("/notes", authenticateuser, notescontroller.getAllNotes);
 router.post(
     "/notes",
-    validate(createnoteschema),
     authenticateuser,
+    validate(createnoteschema),
     notescontroller.createNote
 );
 router.patch(

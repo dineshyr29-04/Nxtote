@@ -1,7 +1,15 @@
 const supabase = require("../lib/supabase");
 
 exports.register = async (name, email, password) => {
-    const { data, error } = await supabase.auth.signUp({ name, email, password });
+    const { data, error } = await supabase.auth.signUp({ 
+        email,
+        password,
+        options: {
+            data: {
+                name: name
+            }
+        }
+    });
 
     if (error) {
         throw error;

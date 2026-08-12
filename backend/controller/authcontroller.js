@@ -3,7 +3,7 @@ const authservice = require("../services/authservices.js");
 exports.register = async (req, res) => {
     try {
         const { name, email, password } = req.body;
-
+        console.log({ name, email, password });
         if (!email || !password) {
             console.log("Email or password any one is wrong");
             return res.status(400).json({
@@ -11,11 +11,16 @@ exports.register = async (req, res) => {
             });
         }
 
-        const user = await authservice.register(email, password);
+        const user = await authservice.register(name, email, password);
         console.log("Registered");
         res.status(201).json(user);
     } catch (error) {
         console.log(error);
+        if (error.message==="User already registered") {
+            return res.status(400).json({
+                message:"User already registered"
+            })
+        }
         res.status(500).json({
             message: "Internal Server Error",
         });
