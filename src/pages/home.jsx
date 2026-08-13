@@ -135,8 +135,11 @@ function Home() {
         }
 
         try {
-            const response = await updateNote(id, updatedContent.trim(),updatedText.trim());
-            const
+            await updateNote(id,
+                {
+                    title: updatedContent.trim(),
+                    content: updatedText.trim()
+                });
 
             // Update state locally for visual proof & testing
             const updatedTasks = tasks.map((task) => {

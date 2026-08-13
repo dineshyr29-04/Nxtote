@@ -1,7 +1,6 @@
-const supabase = require("../lib/supabase");
 const apiError = require("../utils/apierror");
-exports.getAllNotes = async (userid) => {
-    const { data, error } = await supabase
+exports.getAllNotes = async (supabaseClient,userid) => {
+    const { data, error } = await supabaseClient
         .from("notes")
         .select("*")
         .eq("user_id", userid)
@@ -16,8 +15,8 @@ exports.getAllNotes = async (userid) => {
     return data;
 };
 
-exports.createNote = async (notedata) => {
-    const { data, error } = await supabase.from("notes").insert(notedata).select().single();
+exports.createNote = async (supabaseClient,notedata) => {
+    const { data, error } = await supabaseClient.from("notes").insert(notedata).select().single();
 
     if (error) {
         throw error;
@@ -25,8 +24,8 @@ exports.createNote = async (notedata) => {
     return data;
 };
 
-exports.updateNote = async (updates) => {
-    const { data, error } = await supabase
+exports.updateNote = async (supabaseClient,updates) => {
+    const { data, error } = await supabaseClient
         .from("notes")
         .update(updates.updates)
         .eq("id", updates.id)
@@ -41,8 +40,8 @@ exports.updateNote = async (updates) => {
     return data;
 };
 
-exports.deleteNote = async (id, userid) => {
-    const { data, error } = await supabase
+exports.deleteNote = async (supabaseClient,id, userid) => {
+    const { data, error } = await supabaseClient
 
         .from("notes")
         .update({ is_deleted: true })

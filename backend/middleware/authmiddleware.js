@@ -1,5 +1,4 @@
-const supabase = require('../lib/supabase');
-
+const createsupabaseclient = require("../lib/supabase");
 exports.authenticateuser = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
@@ -11,8 +10,8 @@ exports.authenticateuser = async (req, res, next) => {
     }
 
     const token = authHeader.split(" ")[1];
-
-    const { data, error } = await  supabase.auth.getUser(token);
+    req.supabase = createsupabaseclient(token);
+    const { data, error } = await  req.supabase.auth.getUser(token);
 
     if (error) {
       throw error
@@ -22,10 +21,10 @@ exports.authenticateuser = async (req, res, next) => {
     next();
   }
   catch (error) {
-  
+
     res.status(401).json({
       message: "Unauthorized"
     });
-  
+
   }
 };
