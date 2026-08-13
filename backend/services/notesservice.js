@@ -1,5 +1,5 @@
 const supabase = require("../lib/supabase");
-const { asynchandler } = require("../utils/asynchandler");
+const apiError = require("../utils/apierror");
 exports.getAllNotes = async (userid) => {
     const { data, error } = await supabase
         .from("notes")
@@ -7,9 +7,13 @@ exports.getAllNotes = async (userid) => {
         .eq("user_id", userid)
         .eq("is_deleted", false);
 
-    if (error) {
-        throw error;
+    if (data.length===0) {
+        throw new apiError(404, "Notes Not Found");
     }
+    if (error) {
+        throw new apiError(500, "Failed to fetch Notes");
+    }
+    
 
     return data;
 };

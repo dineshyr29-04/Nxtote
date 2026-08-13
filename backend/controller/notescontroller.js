@@ -1,8 +1,10 @@
 const notesService = require("../services/notesservice.js");
 const asynchandler = require("../utils/asynchandler.js");
+const Apierror = require("../utils/apierror.js");
+const apiResponse = require("../utils/apiresponse.js");
 exports.getAllNotes = asynchandler(async (req, res) => {
     const notes = await notesService.getAllNotes(req.user.id);
-    res.status(200).json(notes);
+    res.status(200).json(new apiResponse(true, "The Notes are retrieved", notes));
 });
 
 exports.createNote = asynchandler(async (req, res) => {
@@ -10,9 +12,7 @@ exports.createNote = asynchandler(async (req, res) => {
     const userid = req.user.id;
     const useremail = req.user.email;
     if (!text || !category) {
-        return res.status(400).json({
-            message: "Title and category are requried",
-        });
+        return new Apierror(400, "Text or category required");
     }
 
     const note = await notesService.createNote({
@@ -24,7 +24,7 @@ exports.createNote = asynchandler(async (req, res) => {
         user_id: userid,
     });
     console.log("Note Created Successfully");
-    return res.status(201).json(note);
+    return res.status(201).json(new apiResponse(201, "Note Created successfully", note));
 });
 
 exports.updateNote = asynchandler(async (req, res) => {
@@ -34,12 +34,10 @@ exports.updateNote = asynchandler(async (req, res) => {
     const updatedNote = await notesService.updateNote({ id, userid, updates });
 
     if (!updatedNote) {
-        return res.status(404).json({
-            message: "Note Not Found",
-        });
+        return new Apierror(404, "Note Not found");
     }
     console.log("Note Updated successfully");
-    res.status(200).json(updatedNote);
+    res.status(200).json(new apiResponse(true, "Note updated successfully", updatedNote));
 });
 
 exports.deleteNote = asynchandler(async (req, res) => {
@@ -49,12 +47,8 @@ exports.deleteNote = asynchandler(async (req, res) => {
 
     if (!deletenote) {
         console.log("note not deleted");
-        return res.status(404).json({
-            message: "Note Not Found",
-        });
+        return new Apierror(404, "Note not deleted");
     }
     console.log("NoteDeleted successfully");
-    res.status(200).json({
-        message: "Note Deleted Successfully",
-    });
+    res.status(200).json(new apiResponse(200, "Note delete successfully"));
 });
