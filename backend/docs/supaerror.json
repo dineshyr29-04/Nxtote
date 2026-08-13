@@ -1,3 +1,59 @@
-{
-    
-}
+ {"database_errors"= {
+   "42501": {
+     "name": "INSUFFICIENT_PRIVILEGE",
+     "cause": "Row Level Security (RLS) policy blocks the query, or database permissions are missing.",
+     "recommended_http_status": 403
+   },
+   "23505": {
+     "name": "UNIQUE_VIOLATION",
+     "cause": "Attempted to insert a duplicate value into a column with a UNIQUE constraint (e.g. duplicate email).",
+     "recommended_http_status": 409
+   },
+   "22P02": {
+     "name": "INVALID_TEXT_REPRESENTATION",
+     "cause": "Malformed input syntax (e.g. sending a normal string instead of a valid UUID string).",
+     "recommended_http_status": 400
+   },
+   "23502": {
+     "name": "NOT_NULL_VIOLATION",
+     "cause": "Attempted to insert a null value into a column that is marked as NOT NULL (missing required field).",
+     "recommended_http_status": 400
+   },
+   "23503": {
+     "name": "FOREIGN_KEY_VIOLATION",
+     "cause": "A reference to another table does not exist (e.g. inserting a note for a user_id that doesn't exist in auth.users).",
+     "recommended_http_status": 400
+   },
+   "PGRST116": {
+     "name": "SINGLE_ROW_NOT_FOUND",
+     "cause": "Using .single() on a query that returned 0 rows (item not found).",
+     "recommended_http_status": 404
+   }
+ },
+ "authentication_errors"={
+   "validation_failed": {
+     "name": "VALIDATION_FAILED",
+     "cause": "The signup password is too short, or the email address has an invalid format.",
+     "recommended_http_status": 400
+   },
+   "invalid_credentials": {
+     "name": "INVALID_CREDENTIALS",
+     "cause": "The email or password typed during login is incorrect.",
+     "recommended_http_status": 401
+   },
+   "user_already_exists": {
+     "name": "USER_ALREADY_EXISTS",
+     "cause": "The email address is already registered in the system.",
+     "recommended_http_status": 400
+   },
+   "email_not_confirmed": {
+     "name": "EMAIL_NOT_CONFIRMED",
+     "cause": "Email confirmation is turned on in your dashboard, and the user hasn't clicked the link yet.",
+     "recommended_http_status": 401
+   },
+   "invalid_grant": {
+     "name": "INVALID_GRANT",
+     "cause": "The login session, refresh token, or magic link token has expired or is invalid.",
+     "recommended_http_status": 400
+   }
+ }}
