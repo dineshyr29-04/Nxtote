@@ -12,7 +12,7 @@ exports.createNote = asynchandler(async (req, res) => {
     const userid = req.user.id;
     const useremail = req.user.email;
     if (!text || !category) {
-        return new Apierror(400, "Text or category required");
+        throw new Apierror(400, "Text or category required");
     }
 
     const note = await notesService.createNote({
@@ -24,7 +24,7 @@ exports.createNote = asynchandler(async (req, res) => {
         user_id: userid,
     });
     console.log("Note Created Successfully");
-    return res.status(201).json(new apiResponse(201, "Note Created successfully", note));
+    return res.status(201).json(new apiResponse(true, "Note Created successfully", note));
 });
 
 exports.updateNote = asynchandler(async (req, res) => {
@@ -34,7 +34,7 @@ exports.updateNote = asynchandler(async (req, res) => {
     const updatedNote = await notesService.updateNote({ id, userid, updates });
 
     if (!updatedNote) {
-        return new Apierror(404, "Note Not found");
+        throw new Apierror(404, "Note Not found");
     }
     console.log("Note Updated successfully");
     res.status(200).json(new apiResponse(true, "Note updated successfully", updatedNote));
@@ -47,8 +47,8 @@ exports.deleteNote = asynchandler(async (req, res) => {
 
     if (!deletenote) {
         console.log("note not deleted");
-        return new Apierror(404, "Note not deleted");
+        throw new Apierror(404, "Note not deleted");
     }
     console.log("NoteDeleted successfully");
-    res.status(200).json(new apiResponse(200, "Note delete successfully"));
+    res.status(200).json(new apiResponse(true, "Note delete successfully"));
 });
