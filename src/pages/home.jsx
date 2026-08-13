@@ -106,7 +106,7 @@ function Home() {
         const newstatus = !taskToToggle.completed;
         try {
             await updateNote(id, { completed: newstatus });
-            
+
             const updatedTasks = tasks.map((task) => {
                 if (task.id === id) {
                     logActivity(`${newstatus ? "Completed" : "Reopened"} task: "${task.text}"`);
@@ -127,7 +127,7 @@ function Home() {
         try {
             const taskToDelete = tasks.find((task) => task.id === id);
             if (!taskToDelete) return;
-            
+
             const isDeleted = await deleteNote(id);
             if (isDeleted) {
                 setTasks((prev) => prev.filter((task) => task.id !== id));
@@ -149,7 +149,7 @@ function Home() {
         };
         setActivities((prev) => [newActivity, ...prev].slice(0, 10));
     };
-
+    //clearing activities
     const clearAllActivities = () => {
         setActivities([]);
         localStorage.removeItem("single_user_activities");
@@ -223,15 +223,15 @@ function Home() {
     };
 
     return (
-        <div className="relative w-full min-h-screen bg-gradient-to-br from-indigo-950 via-[#0a0d18] to-[#02050f] text-slate-100 font-sans antialiased overflow-hidden pb-16">
-            
+        <div className="relative w-full min-h-screen bg-gradient-to-br from-indigo-950 via-[#0a0d18] to-[#02050f] text-slate-100 font-sans antialiased overflow-hidden">
+
             {/* 🔮 Glow Accents (Modern Glassmorphic styling) */}
             <div className="absolute top-[-15%] right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/10 blur-[130px] pointer-events-none"></div>
             <div className="absolute bottom-[20%] left-[-15%] w-[450px] h-[450px] rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none"></div>
             <div className="absolute top-[40%] right-[30%] w-[350px] h-[350px] rounded-full bg-violet-600/5 blur-[150px] pointer-events-none"></div>
 
             {/* Dashboard Header */}
-            <header className="relative max-w-7xl mx-auto px-6 pt-10 pb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6 border-b border-indigo-500/10 z-10">
+            <header className="relative mx-auto px-6 pt-10 pb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6 border-b border-indigo-500/10 z-10">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-400 via-indigo-300 to-violet-400 bg-clip-text text-transparent">
                         {getGreeting()}
@@ -249,7 +249,7 @@ function Home() {
                 </div>
 
                 {/* Stats Panel */}
-                <div className="flex gap-4">
+                <div className="flex">
                     <div className="bg-[#101424]/40 border border-white/5 shadow-xl px-5 py-3 rounded-2xl flex items-center gap-4 min-w-[190px] backdrop-blur-xl">
                         <div className="w-10 h-10 rounded-full border-2 border-indigo-500/30 flex items-center justify-center text-xs font-bold text-indigo-300">
                             {completionPercentage}%
