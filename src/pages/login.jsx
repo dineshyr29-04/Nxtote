@@ -34,7 +34,7 @@ function Login() {
         const response = await api.post("/auth/login", { email, password });
         const data = response.data;
 
-        const token = data.data.session?.access_token || data.user?.token;
+        const token = data.data?.session?.access_token || data.data?.user?.token;
         loginUser(token, email, name || "User");
       
         navigate("/home");
