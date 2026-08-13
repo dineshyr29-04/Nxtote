@@ -7,7 +7,7 @@ exports.getAllNotes = asynchandler(async (req, res) => {
     res.status(200).json(new apiResponse(true, "The Notes are retrieved", notes));
 });
 
-exports.createNote = asynchandler(async (req, res) => {
+exports.createNote = asynchandler( async (req, res) => {
     const { text, category, content, priority, completed } = req.body;
     const userid = req.user.id;
     const useremail = req.user.email;

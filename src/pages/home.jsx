@@ -26,7 +26,7 @@ function Home() {
     // UI Toast notification state
     const [toast, setToast] = useState({ show: false, message: "", type: "success" });
 
-    //state initialization for the 
+    //state initialization for the
     // Sync to localStorage
     useEffect(() => {
         localStorage.setItem("single_user_tasks", JSON.stringify(tasks));
@@ -42,7 +42,7 @@ function Home() {
         const fetchnotes = async () => {
             try {
                 const note = await getNotes();
-                const formattedNotes = note.map((item) => ({
+                const formattedNotes = note.data.map((item) => ({
                     ...item,
                     text: item.title || "",
                 }));
@@ -122,7 +122,7 @@ function Home() {
             console.error(error);
             triggerToast("Failed tom update the tasks.");
         }
-        
+
     };
 
     // Delete Task Handler
