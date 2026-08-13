@@ -7,9 +7,7 @@ exports.getAllNotes = async (userid) => {
         .eq("user_id", userid)
         .eq("is_deleted", false);
 
-    if (data.length===0) {
-        throw new apiError(404, "Notes Not Found");
-    }
+    
     if (error) {
         throw new apiError(500, "Failed to fetch Notes");
     }

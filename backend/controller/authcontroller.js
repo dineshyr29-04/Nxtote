@@ -24,5 +24,5 @@ exports.login = asynchandler(async (req, res) => {
 
     const data = await authservice.login({ email, password });
     console.log("loggedin");
-    res.status(200).json(new apiResponse(true, "Loggedi Successfuly", data));
+    res.status(200).json(new apiResponse(true, "Loggedin Successfuly", data));
 });
