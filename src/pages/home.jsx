@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/authprovider";
 import { createNote, getNotes, updateNote, deleteNote } from "../api/notesapi";
 import Toast from "../components/Toastnotification";
-import { Plus, Trash2, Check, Search, Calendar, ListTodo, Activity, Award } from "lucide-react";
+import { Plus, Trash2, Check, Search, Calendar, ListTodo, Activity, Pencil, X } from "lucide-react";
 
 function Home() {
     const { user } = useAuth();
@@ -17,6 +17,11 @@ function Home() {
     const [statusFilter, setStatusFilter] = useState("all");
     const [categoryFilter, setCategoryFilter] = useState("all");
     const [searchQuery, setSearchQuery] = useState("");
+
+    // Editing states
+    const [editingTaskId, setEditingTaskId] = useState(null);
+    const [editTaskText, setEditTaskText] = useState("");
+    const [editTaskContent, setEditTaskContent] = useState("");
 
     const [activities, setActivities] = useState(() => {
         const savedActivities = localStorage.getItem("single_user_activities");
@@ -122,6 +127,39 @@ function Home() {
         }
     };
 
+    // Edit Content Handler (UI logic only as requested)
+    const handleeditcontent = async (id, updatedText, updatedContent) => {
+        if (!updatedText.trim()) {
+            triggerToast("Task title cannot be empty", "error");
+            return;
+        }
+
+        try {
+            const response = await updateNote(id, updatedContent.trim(),updatedText.trim());
+            const
+
+            // Update state locally for visual proof & testing
+            const updatedTasks = tasks.map((task) => {
+                if (task.id === id) {
+                    logActivity(`Edited task: "${task.text}" ➔ "${updatedText.trim()}"`);
+                    return {
+                        ...task,
+                        text: updatedText.trim(),
+                        content: updatedContent.trim()
+                    };
+                }
+                return task;
+            });
+
+            setTasks(updatedTasks);
+            setEditingTaskId(null); // Exit edit mode
+            triggerToast("Task updated successfully!");
+        } catch (error) {
+            console.error("Failed to edit task:", error);
+            triggerToast("Failed to update task details.", "error");
+        }
+    };
+
     // Delete Task Handler
     const handleDeleteTask = async (id) => {
         try {
@@ -149,7 +187,7 @@ function Home() {
         };
         setActivities((prev) => [newActivity, ...prev].slice(0, 10));
     };
-    //clearing activities
+
     const clearAllActivities = () => {
         setActivities([]);
         localStorage.removeItem("single_user_activities");
@@ -223,15 +261,15 @@ function Home() {
     };
 
     return (
-        <div className="relative w-full min-h-screen bg-gradient-to-br from-indigo-950 via-[#0a0d18] to-[#02050f] text-slate-100 font-sans antialiased overflow-hidden">
+        <div className="relative w-full min-h-screen bg-gradient-to-br from-indigo-950 via-[#0a0d18] to-[#02050f] text-slate-100 font-sans antialiased overflow-hidden pb-16">
 
-            {/* 🔮 Glow Accents (Modern Glassmorphic styling) */}
+            {/* 🔮 Glow Accents */}
             <div className="absolute top-[-15%] right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/10 blur-[130px] pointer-events-none"></div>
             <div className="absolute bottom-[20%] left-[-15%] w-[450px] h-[450px] rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none"></div>
             <div className="absolute top-[40%] right-[30%] w-[350px] h-[350px] rounded-full bg-violet-600/5 blur-[150px] pointer-events-none"></div>
 
             {/* Dashboard Header */}
-            <header className="relative mx-auto px-6 pt-10 pb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6 border-b border-indigo-500/10 z-10">
+            <header className="relative max-w-7xl mx-auto px-6 pt-10 pb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6 border-b border-indigo-500/10 z-10">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-400 via-indigo-300 to-violet-400 bg-clip-text text-transparent">
                         {getGreeting()}
@@ -249,7 +287,7 @@ function Home() {
                 </div>
 
                 {/* Stats Panel */}
-                <div className="flex">
+                <div className="flex gap-4">
                     <div className="bg-[#101424]/40 border border-white/5 shadow-xl px-5 py-3 rounded-2xl flex items-center gap-4 min-w-[190px] backdrop-blur-xl">
                         <div className="w-10 h-10 rounded-full border-2 border-indigo-500/30 flex items-center justify-center text-xs font-bold text-indigo-300">
                             {completionPercentage}%
@@ -437,53 +475,104 @@ function Home() {
                                                 : "bg-[#101424]/30 border-white/5 hover:border-indigo-500/20 text-slate-100 hover:bg-[#101424]/40"
                                         }`}
                                     >
-                                        <div className="flex items-start gap-4 flex-1 min-w-0">
-                                            {/* Completed Checkbox */}
-                                            <button
-                                                onClick={() => handleToggleComplete(task.id)}
-                                                className={`w-5 h-5 rounded-md mt-0.5 border flex items-center justify-center transition-all ${
-                                                    task.completed
-                                                        ? "bg-gradient-to-r from-blue-500 to-indigo-500 border-transparent text-white"
-                                                        : "border-indigo-500/30 hover:border-indigo-400 bg-[#080a14]/60"
-                                                }`}
-                                            >
-                                                {task.completed && (
-                                                    <Check className="w-3 h-3 stroke-[3]" />
-                                                )}
-                                            </button>
-
-                                            {/* Note content */}
-                                            <div className="flex-1 min-w-0">
-                                                <p
-                                                    className={`text-sm font-semibold truncate ${task.completed ? "line-through text-slate-500 font-normal" : "text-slate-200 font-medium"}`}
-                                                >
-                                                    {task.text}
-                                                </p>
-                                                {task.content && (
-                                                    <p className={`text-xs text-indigo-100/50 mt-1.5 leading-relaxed ${task.completed ? "line-through text-slate-650" : ""}`}>
-                                                        {task.content}
-                                                    </p>
-                                                )}
-                                                <div className="flex items-center gap-2 mt-3.5 flex-wrap">
-                                                    <span className={`text-[9px] px-2 py-0.5 rounded-md border font-medium flex items-center gap-1 ${getCategoryBadgeClass(task.category)}`}>
-                                                        {getCategoryIcon(task.category)} {task.category}
-                                                    </span>
-                                                    <span
-                                                        className={`text-[9px] px-2 py-0.5 rounded-md border font-extrabold uppercase ${getPriorityColor(task.priority)}`}
+                                        {editingTaskId === task.id ? (
+                                            /* 📝 EDIT MODE CARD */
+                                            <div className="flex-1 flex flex-col gap-3">
+                                                <input
+                                                    type="text"
+                                                    value={editTaskText}
+                                                    onChange={(e) => setEditTaskText(e.target.value)}
+                                                    className="w-full px-3 py-2 bg-[#080a14]/80 border border-indigo-500/30 rounded-xl text-xs text-slate-100 outline-none focus:border-indigo-400/50"
+                                                    placeholder="Edit Title..."
+                                                />
+                                                <textarea
+                                                    value={editTaskContent}
+                                                    onChange={(e) => setEditTaskContent(e.target.value)}
+                                                    rows={2}
+                                                    className="w-full px-3 py-2 bg-[#080a14]/80 border border-indigo-500/30 rounded-xl text-xs text-slate-100 outline-none focus:border-indigo-400/50 resize-none"
+                                                    placeholder="Edit Details..."
+                                                />
+                                                <div className="flex gap-2 justify-end mt-1">
+                                                    <button
+                                                        onClick={() => setEditingTaskId(null)}
+                                                        className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-bold rounded-lg flex items-center gap-1 transition"
                                                     >
-                                                        {task.priority}
-                                                    </span>
+                                                        <X className="w-3 h-3" />
+                                                        Cancel
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleeditcontent(task.id, editTaskText, editTaskContent)}
+                                                        className="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-750 text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition shadow-md shadow-indigo-500/10"
+                                                    >
+                                                        <Check className="w-3 h-3" />
+                                                        Save
+                                                    </button>
                                                 </div>
                                             </div>
-                                        </div>
+                                        ) : (
+                                            /* 👁️ VIEW MODE CARD */
+                                            <>
+                                                <div className="flex items-start gap-4 flex-1 min-w-0">
+                                                    {/* Completed Checkbox */}
+                                                    <button
+                                                        onClick={() => handleToggleComplete(task.id)}
+                                                        className={`w-5 h-5 rounded-md mt-0.5 border flex items-center justify-center transition-all ${
+                                                            task.completed
+                                                                ? "bg-gradient-to-r from-blue-500 to-indigo-500 border-transparent text-white"
+                                                                : "border-indigo-500/30 hover:border-indigo-400 bg-[#080a14]/60"
+                                                        }`}
+                                                    >
+                                                        {task.completed && (
+                                                            <Check className="w-3 h-3 stroke-[3]" />
+                                                        )}
+                                                    </button>
 
-                                        {/* Action buttons (Shown on hover) */}
-                                        <button
-                                            onClick={() => handleDeleteTask(task.id)}
-                                            className="opacity-0 group-hover:opacity-100 p-2 text-indigo-400/40 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition duration-150 ml-4 self-center"
-                                        >
-                                            <Trash2 className="w-4 h-4" />
-                                        </button>
+                                                    {/* Note content */}
+                                                    <div className="flex-1 min-w-0">
+                                                        <p
+                                                            className={`text-sm font-semibold truncate ${task.completed ? "line-through text-slate-500 font-normal" : "text-slate-200 font-medium"}`}
+                                                        >
+                                                            {task.text}
+                                                        </p>
+                                                        {task.content && (
+                                                            <p className={`text-xs text-indigo-100/50 mt-1.5 leading-relaxed ${task.completed ? "line-through text-slate-650" : ""}`}>
+                                                                {task.content}
+                                                            </p>
+                                                        )}
+                                                        <div className="flex items-center gap-2 mt-3.5 flex-wrap">
+                                                            <span className={`text-[9px] px-2 py-0.5 rounded-md border font-medium flex items-center gap-1 ${getCategoryBadgeClass(task.category)}`}>
+                                                                {getCategoryIcon(task.category)} {task.category}
+                                                            </span>
+                                                            <span
+                                                                className={`text-[9px] px-2 py-0.5 rounded-md border font-extrabold uppercase ${getPriorityColor(task.priority)}`}
+                                                            >
+                                                                {task.priority}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {/* Action buttons (Shown on hover) */}
+                                                <div className="opacity-0 group-hover:opacity-100 flex gap-2 ml-4 self-center">
+                                                    <button
+                                                        onClick={() => {
+                                                            setEditingTaskId(task.id);
+                                                            setEditTaskText(task.text);
+                                                            setEditTaskContent(task.content || "");
+                                                        }}
+                                                        className="p-2 text-indigo-400/40 hover:text-indigo-300 hover:bg-indigo-500/10 rounded-xl transition duration-150"
+                                                    >
+                                                        <Pencil className="w-3.5 h-3.5" />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDeleteTask(task.id)}
+                                                        className="p-2 text-indigo-400/40 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition duration-150"
+                                                    >
+                                                        <Trash2 className="w-3.5 h-3.5" />
+                                                    </button>
+                                                </div>
+                                            </>
+                                        )}
                                     </li>
                                 ))}
                             </ul>
@@ -508,7 +597,7 @@ function Home() {
                         </div>
 
                         {activities.length === 0 ? (
-                            <p className="text-xs text-indigo-350/30 italic py-1">No action records.</p>
+                            <p className="text-xs text-indigo-355/30 italic py-1">No action records.</p>
                         ) : (
                             <ul className="flex flex-col gap-2 max-h-[140px] overflow-y-auto pr-2 custom-scrollbar">
                                 {activities.map((act) => (
