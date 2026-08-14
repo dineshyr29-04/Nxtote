@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/authprovider";
 import { createNote, getNotes, updateNote, deleteNote } from "../api/notesapi";
 import Toast from "../components/Toastnotification";
-import { Plus, Trash2, Check, Search, Calendar, ListTodo, Activity, Pencil, X } from "lucide-react";
+import { Plus, Trash2, Check, Search, Calendar, ListTodo, Activity, Pencil, X, Loader2 } from "lucide-react";
 
 function Home() {
     const { user } = useAuth();
@@ -17,6 +17,12 @@ function Home() {
     const [statusFilter, setStatusFilter] = useState("all");
     const [categoryFilter, setCategoryFilter] = useState("all");
     const [searchQuery, setSearchQuery] = useState("");
+
+    // Loaders state
+    const [isLoadingNotes, setIsLoadingNotes] = useState(true);
+    const [isCreating, setIsCreating] = useState(false);
+    const [togglingId, setTogglingId] = useState(null);
+    const [deletingId, setDeletingId] = useState(null);
 
     // Editing states
     const [editingTaskId, setEditingTaskId] = useState(null);
@@ -35,9 +41,15 @@ function Home() {
         localStorage.setItem("single_user_activities", JSON.stringify(activities));
     }, [activities]);
 
+    // Declaring toast notification function
+    const triggerToast = (message, type = "success") => {
+        setToast({ show: true, message, type });
+    };
+
     // Fetch notes on mount
     useEffect(() => {
         const fetchnotes = async () => {
+            setIsLoadingNotes(true);
             try {
                 const response = await getNotes();
                 const notesList = response.data || [];
@@ -49,6 +61,8 @@ function Home() {
             } catch (error) {
                 console.error("Failed to load notes:", error);
                 triggerToast("Failed to sync tasks from cloud.", "error");
+            } finally {
+                setIsLoadingNotes(false);
             }
         };
         fetchnotes();
@@ -62,10 +76,6 @@ function Home() {
         if (hour < 18) return `Good afternoon, ${displayName} ☀️`;
         if (hour < 21) return `Good evening, ${displayName} 🌌`;
         return `Hello, ${displayName} 🌙`;
-    };
-
-    const triggerToast = (message, type = "success") => {
-        setToast({ show: true, message, type });
     };
 
     // Add Task Handler
@@ -84,6 +94,7 @@ function Home() {
             completed: false,
         };
 
+        setIsCreating(true);
         try {
             const response = await createNote(notePayload);
             if (response && response.data) {
@@ -100,15 +111,18 @@ function Home() {
         } catch (error) {
             console.error("Failed to add task:", error);
             triggerToast("Failed to create task.", "error");
+        } finally {
+            setIsCreating(false);
         }
     };
 
-    // Toggle Complete Handler
+    // Toggle Complete Handler with loader
     const handleToggleComplete = async (id) => {
         const taskToToggle = tasks.find((task) => task.id === id);
         if (!taskToToggle) return;
 
         const newstatus = !taskToToggle.completed;
+        setTogglingId(id);
         try {
             await updateNote(id, { completed: newstatus });
 
@@ -124,10 +138,12 @@ function Home() {
         } catch (error) {
             console.error("Failed to update status:", error);
             triggerToast("Failed to update task status.", "error");
+        } finally {
+            setTogglingId(null);
         }
     };
 
-    // Edit Content Handler (UI logic only as requested)
+    // Edit Content Handler
     const handleeditcontent = async (id, updatedText, updatedContent) => {
         if (!updatedText.trim()) {
             triggerToast("Task title cannot be empty", "error");
@@ -135,27 +151,25 @@ function Home() {
         }
 
         try {
-            await updateNote(id,
-                {
-                    title: updatedContent.trim(),
-                    content: updatedText.trim()
-                });
+            await updateNote(id, {
+                title: updatedText.trim(),
+                content: updatedContent.trim(),
+            });
 
-            // Update state locally for visual proof & testing
             const updatedTasks = tasks.map((task) => {
                 if (task.id === id) {
                     logActivity(`Edited task: "${task.text}" ➔ "${updatedText.trim()}"`);
                     return {
                         ...task,
                         text: updatedText.trim(),
-                        content: updatedContent.trim()
+                        content: updatedContent.trim(),
                     };
                 }
                 return task;
             });
 
             setTasks(updatedTasks);
-            setEditingTaskId(null); // Exit edit mode
+            setEditingTaskId(null);
             triggerToast("Task updated successfully!");
         } catch (error) {
             console.error("Failed to edit task:", error);
@@ -163,12 +177,13 @@ function Home() {
         }
     };
 
-    // Delete Task Handler
+    // Delete Task Handler with loader
     const handleDeleteTask = async (id) => {
-        try {
-            const taskToDelete = tasks.find((task) => task.id === id);
-            if (!taskToDelete) return;
+        const taskToDelete = tasks.find((task) => task.id === id);
+        if (!taskToDelete) return;
 
+        setDeletingId(id);
+        try {
             const isDeleted = await deleteNote(id);
             if (isDeleted) {
                 setTasks((prev) => prev.filter((task) => task.id !== id));
@@ -178,6 +193,8 @@ function Home() {
         } catch (err) {
             console.error("Failed to delete task:", err);
             triggerToast("Failed to delete the task.", "error");
+        } finally {
+            setDeletingId(null);
         }
     };
 
@@ -265,7 +282,6 @@ function Home() {
 
     return (
         <div className="relative w-full min-h-screen bg-gradient-to-br from-indigo-950 via-[#0a0d18] to-[#02050f] text-slate-100 font-sans antialiased overflow-hidden pb-16">
-
             {/* 🔮 Glow Accents */}
             <div className="absolute top-[-15%] right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/10 blur-[130px] pointer-events-none"></div>
             <div className="absolute bottom-[20%] left-[-15%] w-[450px] h-[450px] rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none"></div>
@@ -374,9 +390,17 @@ function Home() {
 
                             <button
                                 type="submit"
-                                className="w-full mt-2 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold rounded-xl text-xs hover:scale-[1.01] active:scale-[0.99] transition duration-200 shadow-lg shadow-indigo-500/10"
+                                disabled={isCreating}
+                                className="w-full mt-2 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold rounded-xl text-xs hover:scale-[1.01] active:scale-[0.99] transition duration-200 shadow-lg shadow-indigo-500/10 flex items-center justify-center gap-2 disabled:opacity-60"
                             >
-                                Add Note
+                                {isCreating ? (
+                                    <>
+                                        <Loader2 className="w-4 h-4 animate-spin text-white" />
+                                        <span>Saving Note...</span>
+                                    </>
+                                ) : (
+                                    <span>Add Note</span>
+                                )}
                             </button>
                         </form>
                     </div>
@@ -456,8 +480,14 @@ function Home() {
                             </h2>
                         </div>
 
-                        {/* Empty Board state */}
-                        {filteredTasks.length === 0 ? (
+                        {/* Loading / Empty / Loaded Board states */}
+                        {isLoadingNotes ? (
+                            <div className="flex flex-col items-center justify-center my-auto py-20 text-center">
+                                <Loader2 className="w-8 h-8 text-indigo-400 animate-spin mb-4" />
+                                <p className="text-slate-300 font-semibold text-sm">Loading notes from cloud...</p>
+                                <p className="text-xs text-indigo-300/40 mt-1">Syncing your workspace data</p>
+                            </div>
+                        ) : filteredTasks.length === 0 ? (
                             <div className="flex flex-col items-center justify-center my-auto py-16 text-center">
                                 <div className="w-14 h-14 rounded-2xl bg-[#101424]/50 border border-white/5 flex items-center justify-center mb-4 text-xl">
                                     📭
@@ -484,13 +514,17 @@ function Home() {
                                                 <input
                                                     type="text"
                                                     value={editTaskText}
-                                                    onChange={(e) => setEditTaskText(e.target.value)}
+                                                    onChange={(e) =>
+                                                        setEditTaskText(e.target.value)
+                                                    }
                                                     className="w-full px-3 py-2 bg-[#080a14]/80 border border-indigo-500/30 rounded-xl text-xs text-slate-100 outline-none focus:border-indigo-400/50"
                                                     placeholder="Edit Title..."
                                                 />
                                                 <textarea
                                                     value={editTaskContent}
-                                                    onChange={(e) => setEditTaskContent(e.target.value)}
+                                                    onChange={(e) =>
+                                                        setEditTaskContent(e.target.value)
+                                                    }
                                                     rows={2}
                                                     className="w-full px-3 py-2 bg-[#080a14]/80 border border-indigo-500/30 rounded-xl text-xs text-slate-100 outline-none focus:border-indigo-400/50 resize-none"
                                                     placeholder="Edit Details..."
@@ -504,7 +538,13 @@ function Home() {
                                                         Cancel
                                                     </button>
                                                     <button
-                                                        onClick={() => handleeditcontent(task.id, editTaskText, editTaskContent)}
+                                                        onClick={() =>
+                                                            handleeditcontent(
+                                                                task.id,
+                                                                editTaskText,
+                                                                editTaskContent,
+                                                            )
+                                                        }
                                                         className="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-750 text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition shadow-md shadow-indigo-500/10"
                                                     >
                                                         <Check className="w-3 h-3" />
@@ -516,17 +556,26 @@ function Home() {
                                             /* 👁️ VIEW MODE CARD */
                                             <>
                                                 <div className="flex items-start gap-4 flex-1 min-w-0">
-                                                    {/* Completed Checkbox */}
+                                                    {/* Completed Checkbox with Loader */}
                                                     <button
-                                                        onClick={() => handleToggleComplete(task.id)}
+                                                        disabled={togglingId === task.id}
+                                                        onClick={() =>
+                                                            handleToggleComplete(task.id)
+                                                        }
                                                         className={`w-5 h-5 rounded-md mt-0.5 border flex items-center justify-center transition-all ${
-                                                            task.completed
+                                                            togglingId === task.id
+                                                                ? "border-indigo-400/50 bg-[#080a14]/80 opacity-80"
+                                                                : task.completed
                                                                 ? "bg-gradient-to-r from-blue-500 to-indigo-500 border-transparent text-white"
                                                                 : "border-indigo-500/30 hover:border-indigo-400 bg-[#080a14]/60"
                                                         }`}
                                                     >
-                                                        {task.completed && (
-                                                            <Check className="w-3 h-3 stroke-[3]" />
+                                                        {togglingId === task.id ? (
+                                                            <Loader2 className="w-3 h-3 animate-spin text-indigo-400" />
+                                                        ) : (
+                                                            task.completed && (
+                                                                <Check className="w-3 h-3 stroke-[3]" />
+                                                            )
                                                         )}
                                                     </button>
 
@@ -538,13 +587,18 @@ function Home() {
                                                             {task.text}
                                                         </p>
                                                         {task.content && (
-                                                            <p className={`text-xs text-indigo-100/50 mt-1.5 leading-relaxed ${task.completed ? "line-through text-slate-650" : ""}`}>
+                                                            <p
+                                                                className={`text-xs text-indigo-100/50 mt-1.5 leading-relaxed ${task.completed ? "line-through text-slate-650" : ""}`}
+                                                            >
                                                                 {task.content}
                                                             </p>
                                                         )}
                                                         <div className="flex items-center gap-2 mt-3.5 flex-wrap">
-                                                            <span className={`text-[9px] px-2 py-0.5 rounded-md border font-medium flex items-center gap-1 ${getCategoryBadgeClass(task.category)}`}>
-                                                                {getCategoryIcon(task.category)} {task.category}
+                                                            <span
+                                                                className={`text-[9px] px-2 py-0.5 rounded-md border font-medium flex items-center gap-1 ${getCategoryBadgeClass(task.category)}`}
+                                                            >
+                                                                {getCategoryIcon(task.category)}{" "}
+                                                                {task.category}
                                                             </span>
                                                             <span
                                                                 className={`text-[9px] px-2 py-0.5 rounded-md border font-extrabold uppercase ${getPriorityColor(task.priority)}`}
@@ -568,10 +622,15 @@ function Home() {
                                                         <Pencil className="w-3.5 h-3.5" />
                                                     </button>
                                                     <button
+                                                        disabled={deletingId === task.id}
                                                         onClick={() => handleDeleteTask(task.id)}
-                                                        className="p-2 text-indigo-400/40 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition duration-150"
+                                                        className="p-2 text-indigo-400/40 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition duration-150 disabled:opacity-50"
                                                     >
-                                                        <Trash2 className="w-3.5 h-3.5" />
+                                                        {deletingId === task.id ? (
+                                                            <Loader2 className="w-3.5 h-3.5 animate-spin text-rose-400" />
+                                                        ) : (
+                                                            <Trash2 className="w-3.5 h-3.5" />
+                                                        )}
                                                     </button>
                                                 </div>
                                             </>
@@ -600,7 +659,9 @@ function Home() {
                         </div>
 
                         {activities.length === 0 ? (
-                            <p className="text-xs text-indigo-355/30 italic py-1">No action records.</p>
+                            <p className="text-xs text-indigo-355/30 italic py-1">
+                                No action records.
+                            </p>
                         ) : (
                             <ul className="flex flex-col gap-2 max-h-[140px] overflow-y-auto pr-2 custom-scrollbar">
                                 {activities.map((act) => (
