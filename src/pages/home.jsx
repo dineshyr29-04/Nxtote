@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/authprovider";
 import { createNote, getNotes, updateNote, deleteNote } from "../api/notesapi";
 import Toast from "../components/Toastnotification";
-import { Plus, Trash2, Check, Search, Calendar, ListTodo, Activity, Pencil, X, Loader2 } from "lucide-react";
+import { Plus, Trash2, Check, Search, Calendar, ListTodo, Activity, Pencil, X, Loader2, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 function Home() {
     const { user } = useAuth();
@@ -102,7 +103,7 @@ function Home() {
                     ...response.data,
                     text: response.data.title || "",
                 };
-                setTasks((prev) => [...prev, formattedNewNote]);
+                setTasks((prev) => [formattedNewNote, ...prev]);
                 setNewTaskText("");
                 setNewTaskContent("");
                 logActivity(`Created task: "${formattedNewNote.text}"`);
@@ -116,7 +117,7 @@ function Home() {
         }
     };
 
-    // Toggle Complete Handler with loader
+    // Toggle Complete Handler with loader & animation
     const handleToggleComplete = async (id) => {
         const taskToToggle = tasks.find((task) => task.id === id);
         if (!taskToToggle) return;
@@ -177,7 +178,7 @@ function Home() {
         }
     };
 
-    // Delete Task Handler with loader
+    // Delete Task Handler with exit animation
     const handleDeleteTask = async (id) => {
         const taskToDelete = tasks.find((task) => task.id === id);
         if (!taskToDelete) return;
@@ -282,15 +283,32 @@ function Home() {
 
     return (
         <div className="relative w-full min-h-screen bg-gradient-to-br from-indigo-950 via-[#0a0d18] to-[#02050f] text-slate-100 font-sans antialiased overflow-hidden pb-16">
-            {/* 🔮 Glow Accents */}
-            <div className="absolute top-[-15%] right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/10 blur-[130px] pointer-events-none"></div>
-            <div className="absolute bottom-[20%] left-[-15%] w-[450px] h-[450px] rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none"></div>
-            <div className="absolute top-[40%] right-[30%] w-[350px] h-[350px] rounded-full bg-violet-600/5 blur-[150px] pointer-events-none"></div>
+            {/* 🔮 Animated Glow Background Orbs */}
+            <motion.div
+                animate={{
+                    scale: [1, 1.15, 1],
+                    opacity: [0.15, 0.25, 0.15],
+                }}
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-[-15%] right-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/20 blur-[140px] pointer-events-none"
+            />
+            <motion.div
+                animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.1, 0.2, 0.1],
+                }}
+                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                className="absolute bottom-[20%] left-[-15%] w-[450px] h-[450px] rounded-full bg-indigo-500/20 blur-[130px] pointer-events-none"
+            />
 
             {/* Dashboard Header */}
             <header className="relative max-w-7xl mx-auto px-6 pt-10 pb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6 border-b border-indigo-500/10 z-10">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-400 via-indigo-300 to-violet-400 bg-clip-text text-transparent">
+                <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-400 via-indigo-300 to-violet-400 bg-clip-text text-transparent flex items-center gap-2">
                         {getGreeting()}
                     </h1>
                     <div className="flex items-center gap-2 text-indigo-300/60 mt-2 text-xs">
@@ -303,10 +321,15 @@ function Home() {
                             })}
                         </span>
                     </div>
-                </div>
+                </motion.div>
 
-                {/* Stats Panel */}
-                <div className="flex gap-4">
+                {/* Stats Panel with Floating Entry */}
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    className="flex gap-4"
+                >
                     <div className="bg-[#101424]/40 border border-white/5 shadow-xl px-5 py-3 rounded-2xl flex items-center gap-4 min-w-[190px] backdrop-blur-xl">
                         <div className="w-10 h-10 rounded-full border-2 border-indigo-500/30 flex items-center justify-center text-xs font-bold text-indigo-300">
                             {completionPercentage}%
@@ -326,7 +349,7 @@ function Home() {
                         </p>
                         <p className="text-xl font-bold text-indigo-300 mt-0.5">{pendingTasks}</p>
                     </div>
-                </div>
+                </motion.div>
             </header>
 
             {/* Main Board Layout */}
@@ -334,7 +357,12 @@ function Home() {
                 {/* Left Side Panel: Creation and Filters (Span 4) */}
                 <aside className="lg:col-span-4 flex flex-col gap-6">
                     {/* Create Task Card */}
-                    <div className="bg-[#101424]/30 border border-white/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.25)] rounded-3xl p-6 backdrop-blur-xl hover:border-indigo-500/20 transition duration-300">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.15 }}
+                        className="bg-[#101424]/30 border border-white/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.25)] rounded-3xl p-6 backdrop-blur-xl hover:border-indigo-500/20 transition duration-300"
+                    >
                         <h2 className="text-sm font-bold text-indigo-200 mb-4 flex items-center gap-2">
                             <Plus className="w-4 h-4 text-indigo-400" />
                             <span>Create New Note</span>
@@ -388,10 +416,12 @@ function Home() {
                                 </div>
                             </div>
 
-                            <button
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
                                 type="submit"
                                 disabled={isCreating}
-                                className="w-full mt-2 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold rounded-xl text-xs hover:scale-[1.01] active:scale-[0.99] transition duration-200 shadow-lg shadow-indigo-500/10 flex items-center justify-center gap-2 disabled:opacity-60"
+                                className="w-full mt-2 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold rounded-xl text-xs transition duration-200 shadow-lg shadow-indigo-500/10 flex items-center justify-center gap-2 disabled:opacity-60"
                             >
                                 {isCreating ? (
                                     <>
@@ -399,14 +429,22 @@ function Home() {
                                         <span>Saving Note...</span>
                                     </>
                                 ) : (
-                                    <span>Add Note</span>
+                                    <>
+                                        <Sparkles className="w-3.5 h-3.5" />
+                                        <span>Add Note</span>
+                                    </>
                                 )}
-                            </button>
+                            </motion.button>
                         </form>
-                    </div>
+                    </motion.div>
 
                     {/* Search & Filters Card */}
-                    <div className="bg-[#101424]/30 border border-white/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.25)] rounded-3xl p-6 backdrop-blur-xl">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.2 }}
+                        className="bg-[#101424]/30 border border-white/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.25)] rounded-3xl p-6 backdrop-blur-xl"
+                    >
                         <h2 className="text-sm font-bold text-indigo-200 mb-4 flex items-center gap-2">
                             <Search className="w-4 h-4 text-indigo-400" />
                             <span>Quick Filters</span>
@@ -420,7 +458,7 @@ function Home() {
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     placeholder="Search notes details..."
-                                    className="w-full pl-9 pr-4 py-2.5 bg-[#080a14]/60 border border-indigo-500/20 rounded-xl outline-none text-xs text-slate-200 focus:border-indigo-400/50"
+                                    className="w-full pl-9 pr-4 py-2.5 bg-[#080a14]/60 border border-indigo-500/20 rounded-xl outline-none text-xs text-slate-200 focus:border-indigo-400/50 transition"
                                 />
                             </div>
 
@@ -436,7 +474,7 @@ function Home() {
                                             onClick={() => setStatusFilter(status)}
                                             className={`flex-1 py-1.5 rounded-lg text-xs font-bold transition capitalize ${
                                                 statusFilter === status
-                                                    ? "bg-[#101424]/80 text-indigo-300 border border-indigo-500/25"
+                                                    ? "bg-[#101424]/80 text-indigo-300 border border-indigo-500/25 shadow-sm"
                                                     : "text-slate-400 hover:text-slate-100"
                                             }`}
                                         >
@@ -463,13 +501,18 @@ function Home() {
                                 </select>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
                 </aside>
 
                 {/* Right Side Panel: Workspace board (Span 8) */}
                 <main className="lg:col-span-8 flex flex-col gap-6">
                     {/* Tasks card list board */}
-                    <div className="bg-[#101424]/10 border border-white/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.15)] rounded-3xl p-6 min-h-[460px] backdrop-blur-xl flex flex-col">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.25 }}
+                        className="bg-[#101424]/10 border border-white/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.15)] rounded-3xl p-6 min-h-[460px] backdrop-blur-xl flex flex-col"
+                    >
                         <div className="flex items-center justify-between mb-6 border-b border-indigo-500/10 pb-4">
                             <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2">
                                 <ListTodo className="w-5 h-5 text-indigo-400" />
@@ -480,169 +523,214 @@ function Home() {
                             </h2>
                         </div>
 
-                        {/* Loading / Empty / Loaded Board states */}
+                        {/* Skeleton Shimmer Loading States */}
                         {isLoadingNotes ? (
-                            <div className="flex flex-col items-center justify-center my-auto py-20 text-center">
-                                <Loader2 className="w-8 h-8 text-indigo-400 animate-spin mb-4" />
-                                <p className="text-slate-300 font-semibold text-sm">Loading notes from cloud...</p>
-                                <p className="text-xs text-indigo-300/40 mt-1">Syncing your workspace data</p>
+                            <div className="flex flex-col gap-3.5">
+                                {[1, 2, 3].map((i) => (
+                                    <motion.div
+                                        key={i}
+                                        animate={{ opacity: [0.3, 0.7, 0.3] }}
+                                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }}
+                                        className="h-24 rounded-2xl bg-[#101424]/40 border border-white/5 p-5 flex flex-col justify-between"
+                                    >
+                                        <div className="h-4 w-1/3 bg-indigo-500/20 rounded-md"></div>
+                                        <div className="h-3 w-2/3 bg-slate-700/20 rounded-md"></div>
+                                        <div className="flex gap-2">
+                                            <div className="h-4 w-14 bg-indigo-500/10 rounded-md"></div>
+                                            <div className="h-4 w-12 bg-indigo-500/10 rounded-md"></div>
+                                        </div>
+                                    </motion.div>
+                                ))}
                             </div>
                         ) : filteredTasks.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center my-auto py-16 text-center">
-                                <div className="w-14 h-14 rounded-2xl bg-[#101424]/50 border border-white/5 flex items-center justify-center mb-4 text-xl">
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.3 }}
+                                className="flex flex-col items-center justify-center my-auto py-16 text-center"
+                            >
+                                <div className="w-14 h-14 rounded-2xl bg-[#101424]/50 border border-white/5 flex items-center justify-center mb-4 text-xl shadow-lg">
                                     📭
                                 </div>
                                 <p className="text-slate-400 font-bold text-sm">No notes found</p>
                                 <p className="text-xs text-indigo-300/40 mt-1">
                                     No outstanding notes match your active filters. Try adding one!
                                 </p>
-                            </div>
+                            </motion.div>
                         ) : (
-                            <ul className="flex flex-col gap-3.5">
-                                {filteredTasks.map((task) => (
-                                    <li
-                                        key={task.id}
-                                        className={`group flex items-start justify-between p-5 rounded-2xl border transition-all duration-200 ${
-                                            task.completed
-                                                ? "bg-[#101424]/10 border-transparent text-slate-500 opacity-50"
-                                                : "bg-[#101424]/30 border-white/5 hover:border-indigo-500/20 text-slate-100 hover:bg-[#101424]/40"
-                                        }`}
-                                    >
-                                        {editingTaskId === task.id ? (
-                                            /* 📝 EDIT MODE CARD */
-                                            <div className="flex-1 flex flex-col gap-3">
-                                                <input
-                                                    type="text"
-                                                    value={editTaskText}
-                                                    onChange={(e) =>
-                                                        setEditTaskText(e.target.value)
-                                                    }
-                                                    className="w-full px-3 py-2 bg-[#080a14]/80 border border-indigo-500/30 rounded-xl text-xs text-slate-100 outline-none focus:border-indigo-400/50"
-                                                    placeholder="Edit Title..."
-                                                />
-                                                <textarea
-                                                    value={editTaskContent}
-                                                    onChange={(e) =>
-                                                        setEditTaskContent(e.target.value)
-                                                    }
-                                                    rows={2}
-                                                    className="w-full px-3 py-2 bg-[#080a14]/80 border border-indigo-500/30 rounded-xl text-xs text-slate-100 outline-none focus:border-indigo-400/50 resize-none"
-                                                    placeholder="Edit Details..."
-                                                />
-                                                <div className="flex gap-2 justify-end mt-1">
-                                                    <button
-                                                        onClick={() => setEditingTaskId(null)}
-                                                        className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-bold rounded-lg flex items-center gap-1 transition"
-                                                    >
-                                                        <X className="w-3 h-3" />
-                                                        Cancel
-                                                    </button>
-                                                    <button
-                                                        onClick={() =>
-                                                            handleeditcontent(
-                                                                task.id,
-                                                                editTaskText,
-                                                                editTaskContent,
-                                                            )
+                            <motion.ul layout className="flex flex-col gap-3.5">
+                                <AnimatePresence mode="popLayout">
+                                    {filteredTasks.map((task) => (
+                                        <motion.li
+                                            layout
+                                            key={task.id}
+                                            initial={{ opacity: 0, y: 15, scale: 0.98 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, x: -35, scale: 0.95 }}
+                                            transition={{ type: "spring", stiffness: 450, damping: 35 }}
+                                            whileHover={{ scale: 1.008 }}
+                                            className={`group flex items-start justify-between p-5 rounded-2xl border transition-colors duration-200 ${
+                                                task.completed
+                                                    ? "bg-[#101424]/10 border-transparent text-slate-500 opacity-60"
+                                                    : "bg-[#101424]/30 border-white/5 hover:border-indigo-500/20 text-slate-100 hover:bg-[#101424]/40 shadow-sm"
+                                            }`}
+                                        >
+                                            {editingTaskId === task.id ? (
+                                                /* 📝 EDIT MODE CARD */
+                                                <div className="flex-1 flex flex-col gap-3">
+                                                    <input
+                                                        type="text"
+                                                        value={editTaskText}
+                                                        onChange={(e) =>
+                                                            setEditTaskText(e.target.value)
                                                         }
-                                                        className="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-750 text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition shadow-md shadow-indigo-500/10"
-                                                    >
-                                                        <Check className="w-3 h-3" />
-                                                        Save
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            /* 👁️ VIEW MODE CARD */
-                                            <>
-                                                <div className="flex items-start gap-4 flex-1 min-w-0">
-                                                    {/* Completed Checkbox with Loader */}
-                                                    <button
-                                                        disabled={togglingId === task.id}
-                                                        onClick={() =>
-                                                            handleToggleComplete(task.id)
+                                                        className="w-full px-3 py-2 bg-[#080a14]/80 border border-indigo-500/30 rounded-xl text-xs text-slate-100 outline-none focus:border-indigo-400/50"
+                                                        placeholder="Edit Title..."
+                                                    />
+                                                    <textarea
+                                                        value={editTaskContent}
+                                                        onChange={(e) =>
+                                                            setEditTaskContent(e.target.value)
                                                         }
-                                                        className={`w-5 h-5 rounded-md mt-0.5 border flex items-center justify-center transition-all ${
-                                                            togglingId === task.id
-                                                                ? "border-indigo-400/50 bg-[#080a14]/80 opacity-80"
-                                                                : task.completed
-                                                                ? "bg-gradient-to-r from-blue-500 to-indigo-500 border-transparent text-white"
-                                                                : "border-indigo-500/30 hover:border-indigo-400 bg-[#080a14]/60"
-                                                        }`}
-                                                    >
-                                                        {togglingId === task.id ? (
-                                                            <Loader2 className="w-3 h-3 animate-spin text-indigo-400" />
-                                                        ) : (
-                                                            task.completed && (
-                                                                <Check className="w-3 h-3 stroke-[3]" />
-                                                            )
-                                                        )}
-                                                    </button>
-
-                                                    {/* Note content */}
-                                                    <div className="flex-1 min-w-0">
-                                                        <p
-                                                            className={`text-sm font-semibold truncate ${task.completed ? "line-through text-slate-500 font-normal" : "text-slate-200 font-medium"}`}
+                                                        rows={2}
+                                                        className="w-full px-3 py-2 bg-[#080a14]/80 border border-indigo-500/30 rounded-xl text-xs text-slate-100 outline-none focus:border-indigo-400/50 resize-none"
+                                                        placeholder="Edit Details..."
+                                                    />
+                                                    <div className="flex gap-2 justify-end mt-1">
+                                                        <motion.button
+                                                            whileHover={{ scale: 1.05 }}
+                                                            whileTap={{ scale: 0.95 }}
+                                                            onClick={() => setEditingTaskId(null)}
+                                                            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-bold rounded-lg flex items-center gap-1 transition"
                                                         >
-                                                            {task.text}
-                                                        </p>
-                                                        {task.content && (
-                                                            <p
-                                                                className={`text-xs text-indigo-100/50 mt-1.5 leading-relaxed ${task.completed ? "line-through text-slate-650" : ""}`}
-                                                            >
-                                                                {task.content}
-                                                            </p>
-                                                        )}
-                                                        <div className="flex items-center gap-2 mt-3.5 flex-wrap">
-                                                            <span
-                                                                className={`text-[9px] px-2 py-0.5 rounded-md border font-medium flex items-center gap-1 ${getCategoryBadgeClass(task.category)}`}
-                                                            >
-                                                                {getCategoryIcon(task.category)}{" "}
-                                                                {task.category}
-                                                            </span>
-                                                            <span
-                                                                className={`text-[9px] px-2 py-0.5 rounded-md border font-extrabold uppercase ${getPriorityColor(task.priority)}`}
-                                                            >
-                                                                {task.priority}
-                                                            </span>
-                                                        </div>
+                                                            <X className="w-3 h-3" />
+                                                            Cancel
+                                                        </motion.button>
+                                                        <motion.button
+                                                            whileHover={{ scale: 1.05 }}
+                                                            whileTap={{ scale: 0.95 }}
+                                                            onClick={() =>
+                                                                handleeditcontent(
+                                                                    task.id,
+                                                                    editTaskText,
+                                                                    editTaskContent,
+                                                                )
+                                                            }
+                                                            className="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-750 text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition shadow-md shadow-indigo-500/10"
+                                                        >
+                                                            <Check className="w-3 h-3" />
+                                                            Save
+                                                        </motion.button>
                                                     </div>
                                                 </div>
+                                            ) : (
+                                                /* 👁️ VIEW MODE CARD */
+                                                <>
+                                                    <div className="flex items-start gap-4 flex-1 min-w-0">
+                                                        {/* Completed Checkbox with Spring Checkmark */}
+                                                        <motion.button
+                                                            whileTap={{ scale: 0.85 }}
+                                                            disabled={togglingId === task.id}
+                                                            onClick={() =>
+                                                                handleToggleComplete(task.id)
+                                                            }
+                                                            className={`w-5 h-5 rounded-md mt-0.5 border flex items-center justify-center transition-all ${
+                                                                togglingId === task.id
+                                                                    ? "border-indigo-400/50 bg-[#080a14]/80 opacity-80"
+                                                                    : task.completed
+                                                                    ? "bg-gradient-to-r from-blue-500 to-indigo-500 border-transparent text-white shadow-sm shadow-indigo-500/20"
+                                                                    : "border-indigo-500/30 hover:border-indigo-400 bg-[#080a14]/60"
+                                                            }`}
+                                                        >
+                                                            {togglingId === task.id ? (
+                                                                <Loader2 className="w-3 h-3 animate-spin text-indigo-400" />
+                                                            ) : (
+                                                                task.completed && (
+                                                                    <motion.div
+                                                                        initial={{ scale: 0, rotate: -45 }}
+                                                                        animate={{ scale: 1, rotate: 0 }}
+                                                                        transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                                                                    >
+                                                                        <Check className="w-3 h-3 stroke-[3]" />
+                                                                    </motion.div>
+                                                                )
+                                                            )}
+                                                        </motion.button>
 
-                                                {/* Action buttons (Shown on hover) */}
-                                                <div className="opacity-0 group-hover:opacity-100 flex gap-2 ml-4 self-center">
-                                                    <button
-                                                        onClick={() => {
-                                                            setEditingTaskId(task.id);
-                                                            setEditTaskText(task.text);
-                                                            setEditTaskContent(task.content || "");
-                                                        }}
-                                                        className="p-2 text-indigo-400/40 hover:text-indigo-300 hover:bg-indigo-500/10 rounded-xl transition duration-150"
-                                                    >
-                                                        <Pencil className="w-3.5 h-3.5" />
-                                                    </button>
-                                                    <button
-                                                        disabled={deletingId === task.id}
-                                                        onClick={() => handleDeleteTask(task.id)}
-                                                        className="p-2 text-indigo-400/40 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition duration-150 disabled:opacity-50"
-                                                    >
-                                                        {deletingId === task.id ? (
-                                                            <Loader2 className="w-3.5 h-3.5 animate-spin text-rose-400" />
-                                                        ) : (
-                                                            <Trash2 className="w-3.5 h-3.5" />
-                                                        )}
-                                                    </button>
-                                                </div>
-                                            </>
-                                        )}
-                                    </li>
-                                ))}
-                            </ul>
+                                                        {/* Note content */}
+                                                        <div className="flex-1 min-w-0">
+                                                            <p
+                                                                className={`text-sm font-semibold truncate transition-all duration-200 ${task.completed ? "line-through text-slate-500 font-normal" : "text-slate-200 font-medium"}`}
+                                                            >
+                                                                {task.text}
+                                                            </p>
+                                                            {task.content && (
+                                                                <p
+                                                                    className={`text-xs text-indigo-100/50 mt-1.5 leading-relaxed ${task.completed ? "line-through text-slate-650" : ""}`}
+                                                                >
+                                                                    {task.content}
+                                                                </p>
+                                                            )}
+                                                            <div className="flex items-center gap-2 mt-3.5 flex-wrap">
+                                                                <span
+                                                                    className={`text-[9px] px-2 py-0.5 rounded-md border font-medium flex items-center gap-1 ${getCategoryBadgeClass(task.category)}`}
+                                                                >
+                                                                    {getCategoryIcon(task.category)}{" "}
+                                                                    {task.category}
+                                                                </span>
+                                                                <span
+                                                                    className={`text-[9px] px-2 py-0.5 rounded-md border font-extrabold uppercase ${getPriorityColor(task.priority)}`}
+                                                                >
+                                                                    {task.priority}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Action buttons (Shown on hover) */}
+                                                    <div className="opacity-0 group-hover:opacity-100 flex gap-2 ml-4 self-center transition-opacity duration-150">
+                                                        <motion.button
+                                                            whileHover={{ scale: 1.15 }}
+                                                            whileTap={{ scale: 0.9 }}
+                                                            onClick={() => {
+                                                                setEditingTaskId(task.id);
+                                                                setEditTaskText(task.text);
+                                                                setEditTaskContent(task.content || "");
+                                                            }}
+                                                            className="p-2 text-indigo-400/40 hover:text-indigo-300 hover:bg-indigo-500/10 rounded-xl transition duration-150"
+                                                        >
+                                                            <Pencil className="w-3.5 h-3.5" />
+                                                        </motion.button>
+                                                        <motion.button
+                                                            whileHover={{ scale: 1.15 }}
+                                                            whileTap={{ scale: 0.9 }}
+                                                            disabled={deletingId === task.id}
+                                                            onClick={() => handleDeleteTask(task.id)}
+                                                            className="p-2 text-indigo-400/40 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition duration-150 disabled:opacity-50"
+                                                        >
+                                                            {deletingId === task.id ? (
+                                                                <Loader2 className="w-3.5 h-3.5 animate-spin text-rose-400" />
+                                                            ) : (
+                                                                <Trash2 className="w-3.5 h-3.5" />
+                                                            )}
+                                                        </motion.button>
+                                                    </div>
+                                                </>
+                                            )}
+                                        </motion.li>
+                                    ))}
+                                </AnimatePresence>
+                            </motion.ul>
                         )}
-                    </div>
+                    </motion.div>
 
                     {/* Action History Feed */}
-                    <section className="bg-[#101424]/30 border border-white/5 rounded-3xl p-6 shadow-xl">
+                    <motion.section
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: 0.3 }}
+                        className="bg-[#101424]/30 border border-white/5 rounded-3xl p-6 shadow-xl"
+                    >
                         <div className="flex items-center justify-between mb-4 border-b border-indigo-500/10 pb-3">
                             <h2 className="text-xs font-bold text-indigo-200 flex items-center gap-2">
                                 <Activity className="w-3.5 h-3.5 text-indigo-400" />
@@ -677,7 +765,7 @@ function Home() {
                                 ))}
                             </ul>
                         )}
-                    </section>
+                    </motion.section>
                 </main>
             </div>
 
