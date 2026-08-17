@@ -1,14 +1,12 @@
-const supabase = require("../lib/supabase");
-
-exports.register = async (name, email, password) => {
-    const { data, error } = await supabase.auth.signUp({ 
+exports.register = async (supabaseClient, name, email, password) => {
+    const { data, error } = await supabaseClient.auth.signUp({
         email,
         password,
         options: {
             data: {
-                name: name
-            }
-        }
+                name: name,
+            },
+        },
     });
 
     if (error) {
@@ -17,8 +15,8 @@ exports.register = async (name, email, password) => {
     return data;
 };
 
-exports.login = async (credentials) => {
-    const { data, error } = await supabase.auth.signInWithPassword(credentials);
+exports.login = async (supabaseClient, credentials) => {
+    const { data, error } = await supabaseClient.auth.signInWithPassword(credentials);
 
     if (error) {
         throw error;

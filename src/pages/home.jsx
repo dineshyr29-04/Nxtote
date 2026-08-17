@@ -2,7 +2,19 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/authprovider";
 import { createNote, getNotes, updateNote, deleteNote } from "../api/notesapi";
 import Toast from "../components/Toastnotification";
-import { Plus, Trash2, Check, Search, Calendar, ListTodo, Activity, Pencil, X, Loader2, Sparkles } from "lucide-react";
+import {
+    Plus,
+    Trash2,
+    Check,
+    Search,
+    Calendar,
+    ListTodo,
+    Activity,
+    Pencil,
+    X,
+    Loader2,
+    Sparkles,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 function Home() {
@@ -530,7 +542,12 @@ function Home() {
                                     <motion.div
                                         key={i}
                                         animate={{ opacity: [0.3, 0.7, 0.3] }}
-                                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.2 }}
+                                        transition={{
+                                            duration: 1.5,
+                                            repeat: Infinity,
+                                            ease: "easeInOut",
+                                            delay: i * 0.2,
+                                        }}
                                         className="h-24 rounded-2xl bg-[#101424]/40 border border-white/5 p-5 flex flex-col justify-between"
                                     >
                                         <div className="h-4 w-1/3 bg-indigo-500/20 rounded-md"></div>
@@ -567,7 +584,11 @@ function Home() {
                                             initial={{ opacity: 0, y: 15, scale: 0.98 }}
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
                                             exit={{ opacity: 0, x: -35, scale: 0.95 }}
-                                            transition={{ type: "spring", stiffness: 450, damping: 35 }}
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 450,
+                                                damping: 35,
+                                            }}
                                             whileHover={{ scale: 1.008 }}
                                             className={`group flex items-start justify-between p-5 rounded-2xl border transition-colors duration-200 ${
                                                 task.completed
@@ -638,8 +659,8 @@ function Home() {
                                                                 togglingId === task.id
                                                                     ? "border-indigo-400/50 bg-[#080a14]/80 opacity-80"
                                                                     : task.completed
-                                                                    ? "bg-gradient-to-r from-blue-500 to-indigo-500 border-transparent text-white shadow-sm shadow-indigo-500/20"
-                                                                    : "border-indigo-500/30 hover:border-indigo-400 bg-[#080a14]/60"
+                                                                      ? "bg-gradient-to-r from-blue-500 to-indigo-500 border-transparent text-white shadow-sm shadow-indigo-500/20"
+                                                                      : "border-indigo-500/30 hover:border-indigo-400 bg-[#080a14]/60"
                                                             }`}
                                                         >
                                                             {togglingId === task.id ? (
@@ -647,9 +668,19 @@ function Home() {
                                                             ) : (
                                                                 task.completed && (
                                                                     <motion.div
-                                                                        initial={{ scale: 0, rotate: -45 }}
-                                                                        animate={{ scale: 1, rotate: 0 }}
-                                                                        transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                                                                        initial={{
+                                                                            scale: 0,
+                                                                            rotate: -45,
+                                                                        }}
+                                                                        animate={{
+                                                                            scale: 1,
+                                                                            rotate: 0,
+                                                                        }}
+                                                                        transition={{
+                                                                            type: "spring",
+                                                                            stiffness: 500,
+                                                                            damping: 25,
+                                                                        }}
                                                                     >
                                                                         <Check className="w-3 h-3 stroke-[3]" />
                                                                     </motion.div>
@@ -695,7 +726,9 @@ function Home() {
                                                             onClick={() => {
                                                                 setEditingTaskId(task.id);
                                                                 setEditTaskText(task.text);
-                                                                setEditTaskContent(task.content || "");
+                                                                setEditTaskContent(
+                                                                    task.content || "",
+                                                                );
                                                             }}
                                                             className="p-2 text-indigo-400/40 hover:text-indigo-300 hover:bg-indigo-500/10 rounded-xl transition duration-150"
                                                         >
@@ -705,7 +738,9 @@ function Home() {
                                                             whileHover={{ scale: 1.15 }}
                                                             whileTap={{ scale: 0.9 }}
                                                             disabled={deletingId === task.id}
-                                                            onClick={() => handleDeleteTask(task.id)}
+                                                            onClick={() =>
+                                                                handleDeleteTask(task.id)
+                                                            }
                                                             className="p-2 text-indigo-400/40 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition duration-150 disabled:opacity-50"
                                                         >
                                                             {deletingId === task.id ? (
