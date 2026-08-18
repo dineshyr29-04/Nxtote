@@ -9,7 +9,7 @@ exports.validate = (schema) => {
                 message: issue.message,
             }));
 
-            return next(new Apierror(400, "Internal Server Error", errors));
+            return next(new Apierror(400, "Invalid Request Body", errors));
         }
         req.body = result.data;
         next();

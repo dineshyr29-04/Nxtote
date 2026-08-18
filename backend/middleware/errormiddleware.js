@@ -7,7 +7,7 @@ exports.errorhandler = (err, req, res, next) => {
     if (err.code) {
         switch (err.code) {
             case "42501":
-                statusCode = 404;
+                statusCode = 403;
                 message = "Access Denied You are not permitted";
                 break;
             case "23505":
